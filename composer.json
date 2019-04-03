@@ -1,0 +1,24 @@
+{
+  "name": "eureka/component-web",
+  "description": "Basic component for website: Breadcrumb, Menu, Meta & Notification",
+  "type": "library",
+  "license": "MIT",
+
+  "authors": [
+    {
+      "name": "Romain Cottard",
+      "role": "Developer"
+    }
+
+  ],
+
+  "autoload": {
+    "psr-4": {
+      "Eureka\\Component\\Web\\": "./src"
+    }
+  },
+
+  "require": {
+  }
+
+}
