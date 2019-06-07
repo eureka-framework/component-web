@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * Copyright (c) Romain Cottard
@@ -22,16 +22,16 @@ class Breadcrumb implements \Iterator, \Countable
     /** @var int $count Number of element in breadcrumb */
     private $count = 0;
 
-    /** @var BreadcrumbItem[] $collection */
+    /** @var CarouselItem[] $collection */
     private $collection = [];
 
     /**
      * Add item.
      *
-     * @param BreadcrumbItem $item
+     * @param CarouselItem $item
      * @return $this
      */
-    public function add(BreadcrumbItem $item): self
+    public function add(CarouselItem $item): self
     {
         $this->collection[$this->count] = $item;
 
@@ -63,9 +63,9 @@ class Breadcrumb implements \Iterator, \Countable
     /**
      * Current iterator method.
      *
-     * @return BreadcrumbItem
+     * @return CarouselItem
      */
-    public function current(): BreadcrumbItem
+    public function current(): CarouselItem
     {
         return $this->collection[$this->index];
     }

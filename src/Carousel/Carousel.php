@@ -7,31 +7,31 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Web\Notification;
+namespace Eureka\Component\Web\Carousel;
 
 /**
  * Breadcrumb class
  *
- * @author  Romain Cottar
+ * @author  Romain Cottard
  */
-class NotificationCollection implements \Iterator, \Countable
+class Carousel implements \Iterator, \Countable
 {
-    /** @var int $index Current index item. */
+    /** @var int $index Current index key. */
     private $index = 0;
 
-    /** @var int $count Number of notification */
+    /** @var int $count Number of element in carousel */
     private $count = 0;
 
-    /** @var NotificationInterface[] $collection */
+    /** @var CarouselItem[] $collection */
     private $collection = [];
 
     /**
      * Add item.
      *
-     * @param  NotificationInterface $item
-     * @return self
+     * @param CarouselItem $item
+     * @return $this
      */
-    public function add(NotificationInterface $item): self
+    public function add(CarouselItem $item): self
     {
         $this->collection[$this->count] = $item;
 
@@ -41,11 +41,31 @@ class NotificationCollection implements \Iterator, \Countable
     }
 
     /**
+     * Check if is the last element of breadcrumb.
+     *
+     * @return bool
+     */
+    public function isLast(): bool
+    {
+        return ($this->index === ($this->count - 1));
+    }
+
+    /**
+     * Check if is the first element of breadcrumb.
+     *
+     * @return bool
+     */
+    public function isFirst(): bool
+    {
+        return ($this->index === 0);
+    }
+
+    /**
      * Current iterator method.
      *
-     * @return NotificationInterface
+     * @return CarouselItem
      */
-    public function current(): NotificationInterface
+    public function current(): CarouselItem
     {
         return $this->collection[$this->index];
     }
