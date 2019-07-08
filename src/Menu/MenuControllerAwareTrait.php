@@ -50,7 +50,7 @@ trait MenuControllerAwareTrait
 
         $menu = new Menu();
         foreach ($this->menuConfig as $data) {
-            $menuUri = isset($data['route']) ? $this->getUri($data['route']) : '#';
+            $menuUri = isset($data['route']) ? $this->getRouteUri($data['route']) : '#';
 
             $item = new MenuItem($data['label']);
             $item
@@ -101,7 +101,7 @@ trait MenuControllerAwareTrait
         $menu = new Menu();
         foreach ($children as $data) {
             $menuRoute = isset($data['route']) ? $data['route'] : null;
-            $menuUri   = $menuRoute !== null ? $this->getUri($data['route']) : '#';
+            $menuUri   = $menuRoute !== null ? $this->getRouteUri($data['route']) : '#';
 
             $item = new MenuItem($data['label']);
             $item
