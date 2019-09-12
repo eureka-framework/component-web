@@ -21,42 +21,61 @@ trait MenuControllerAwareTrait
     /** @var string $menuStateClosed */
     private static $menuStateClosed = 'closed';
 
-    /** @var array $menuConfig */
-    private $menuConfig;
+    /** @var array $menuConfigMain */
+    private $menuConfigMain;
+
+    /** @var array $menuConfigSecondary */
+    private $menuConfigSecondary;
 
     /** @var string $cookieMenuStateName */
     private $cookieMenuStateName = '';
 
     /**
-     * @param array $menuConfig
+     * @param array $menuConfigMain
      * @param string $cookieMenuStateName
+     * @param array $menuConfigSecondary
      * @return void
      */
-    public function setMenuConfig(array $menuConfig, string $cookieMenuStateName = ''): void
+    public function setMenuConfig(array $menuConfigMain, string $cookieMenuStateName = '', array $menuConfigSecondary = []): void
     {
-        $this->menuConfig = $menuConfig;
+        $this->menuConfigMain      = $menuConfigMain;
+        $this->menuConfigSecondary = $menuConfigSecondary;
         $this->cookieMenuStateName = $cookieMenuStateName;
     }
 
     /**
      * Menu with max depth of 2.
      *
+     * @param  bool $isMain
      * @return Menu
      */
-    protected function getMenu(): Menu
+    protected function getMenu(bool $isMain = true): Menu
     {
         $routeParams  = $this->getRoute();
-        $currentRoute = isset($routeParams['_route']) ? $routeParams['_route'] : '';
+        $currentRoute = $routeParams['_route'] ?? '';
+        $menuConfig   = $isMain ? $this->menuConfigMain : $this->menuConfigSecondary;
 
         $menu = new Menu();
-        foreach ($this->menuConfig as $data) {
-            $menuUri = isset($data['route']) ? $this->getRouteUri($data['route']) : '#';
+        foreach ($menuConfig as $data) {
+            $menuRoute = $data['route'] ?? null;
+
+            if (isset($data['route'])) {
+                if (mb_substr($data['route'], 0, 4) === 'http') {
+                    $menuUri = $data['route'];
+                } elseif (mb_substr($data['route'], 0, 1) === '#') {
+                    $menuUri = 'javascript::void(0);';
+                } else {
+                    $menuUri = isset($data['route']) ? $this->getRouteUri($data['route']) : '#';
+                }
+            } else {
+                $menuUri = '#';
+            }
 
             $item = new MenuItem($data['label']);
             $item
                 ->setUri($menuUri)
                 ->setIcon(isset($data['icon']) ? $data['icon'] : '')
-                ->setIsActive(false)
+                ->setIsActive($menuRoute === $currentRoute)
             ;
 
             if (!empty($data['children'])) {

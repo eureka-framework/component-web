@@ -39,7 +39,7 @@ class CarouselItem
      *
      * @param string $title
      */
-    public function __construct(string $title)
+    public function __construct(string $title = '')
     {
         $this->setTitle($title);
     }
@@ -52,6 +52,16 @@ class CarouselItem
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    /**
+     * Get sub title
+     *
+     * @return string
+     */
+    public function getSubTitle(): string
+    {
+        return $this->subTitle;
     }
 
     /**
