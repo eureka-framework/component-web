@@ -22,22 +22,34 @@ class Breadcrumb implements \Iterator, \Countable
     /** @var int $count Number of element in breadcrumb */
     private $count = 0;
 
-    /** @var CarouselItem[] $collection */
+    /** @var BreadcrumbItem[] $collection */
     private $collection = [];
 
     /**
      * Add item.
      *
-     * @param CarouselItem $item
+     * @param BreadcrumbItem $item
      * @return $this
      */
-    public function add(CarouselItem $item): self
+    public function add(BreadcrumbItem $item): self
     {
         $this->collection[$this->count] = $item;
 
         $this->count++;
 
         return $this;
+    }
+
+    /**
+     * @return BreadcrumbItem
+     */
+    public function pop(): BreadcrumbItem
+    {
+        $last = array_pop($this->collection);
+        $this->count--;
+        $this->rewind();
+
+        return $last;
     }
 
     /**
@@ -63,9 +75,9 @@ class Breadcrumb implements \Iterator, \Countable
     /**
      * Current iterator method.
      *
-     * @return CarouselItem
+     * @return BreadcrumbItem
      */
-    public function current(): CarouselItem
+    public function current(): BreadcrumbItem
     {
         return $this->collection[$this->index];
     }
