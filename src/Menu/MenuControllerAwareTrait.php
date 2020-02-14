@@ -47,9 +47,10 @@ trait MenuControllerAwareTrait
      * Menu with max depth of 2.
      *
      * @param  bool $isMain
+     * @param  bool $isLogged
      * @return Menu
      */
-    protected function getMenu(bool $isMain = true): Menu
+    protected function getMenu(bool $isMain = true, bool $isLogged = false): Menu
     {
         $routeParams  = $this->getRoute();
         $currentRoute = $routeParams['_route'] ?? '';
@@ -57,6 +58,10 @@ trait MenuControllerAwareTrait
 
         $menu = new Menu();
         foreach ($menuConfig as $data) {
+            $mustBeLogged = (bool) ($data['mustBeLogged'] ?? false);
+            if ($mustBeLogged && !$isLogged) {
+                continue;
+            }
             $menuRoute = $data['route'] ?? null;
 
             if (isset($data['route'])) {
