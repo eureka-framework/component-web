@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -7,116 +7,37 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Eureka\Component\Web\Carousel;
+
+use Eureka\Component\Web\Collection\AbstractCollection;
 
 /**
  * Breadcrumb class
  *
  * @author  Romain Cottard
  */
-class Carousel implements \Iterator, \Countable
+class Carousel extends AbstractCollection
 {
-    /** @var int $index Current index key. */
-    private $index = 0;
-
-    /** @var int $count Number of element in carousel */
-    private $count = 0;
-
-    /** @var CarouselItem[] $collection */
-    private $collection = [];
-
     /**
      * Add item.
      *
      * @param CarouselItem $item
      * @return $this
      */
-    public function add(CarouselItem $item): self
+    public function push(CarouselItem $item): self
     {
-        $this->collection[$this->count] = $item;
-
-        $this->count++;
+        $this->pushItem($item);
 
         return $this;
     }
 
     /**
-     * Check if is the last element of breadcrumb.
-     *
-     * @return bool
-     */
-    public function isLast(): bool
-    {
-        return ($this->index === ($this->count - 1));
-    }
-
-    /**
-     * Check if is the first element of breadcrumb.
-     *
-     * @return bool
-     */
-    public function isFirst(): bool
-    {
-        return ($this->index === 0);
-    }
-
-    /**
-     * Current iterator method.
-     *
      * @return CarouselItem
      */
-    public function current(): CarouselItem
+    public function pop(): CarouselItem
     {
-        return $this->collection[$this->index];
-    }
-
-    /**
-     * Key iterator method.
-     *
-     * @return int
-     */
-    public function key(): int
-    {
-        return $this->index;
-    }
-
-    /**
-     * Next iterator method.
-     *
-     * @return void
-     */
-    public function next(): void
-    {
-        $this->index++;
-    }
-
-    /**
-     * Rewind iterator method.
-     *
-     * @return void
-     */
-    public function rewind(): void
-    {
-        $this->index = 0;
-    }
-
-    /**
-     * Valid iterator method.
-     *
-     * @return bool
-     */
-    public function valid(): bool
-    {
-        return ($this->index < $this->count);
-    }
-
-    /**
-     * Count countable method.
-     *
-     * @return int
-     */
-    public function count(): int
-    {
-        return $this->count;
+        return $this->popItem();
     }
 }

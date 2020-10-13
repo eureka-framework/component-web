@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -7,39 +7,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Eureka\Component\Web\Menu;
+
+use Eureka\Component\Web\Collection\AbstractCollection;
 
 /**
  * Menu class
  *
  * @author  Romain Cottard
  */
-class Menu implements \Iterator, \Countable
+class Menu extends AbstractCollection
 {
-    /** @var int $index Current index menu. */
-    private $index = 0;
-
-    /** @var int $count Number of item in collection */
-    private $count = 0;
-
-    /** @var int[] $names */
-    private $names = [];
-
-    /** @var MenuItem[] $collection */
-    private $collection = [];
-
     /**
      * Add item.
      *
      * @param  MenuItem $item
      * @return self
      */
-    public function add(MenuItem $item): self
+    public function push(MenuItem $item): self
     {
-        $this->collection[$this->count] = $item;
-        $this->names[$item->getName()]  = $this->count;
-
-        $this->count++;
+        $this->pushItem($item);
 
         return $this;
     }
@@ -50,70 +39,8 @@ class Menu implements \Iterator, \Countable
      * @param  string $name
      * @return MenuItem
      */
-    public function getItem(string $name): MenuItem
+    public function get(string $name): MenuItem
     {
-        $index = $this->names[$name];
-
-        return $this->collection[$index];
-    }
-
-    /**
-     * Current iterator method.
-     *
-     * @return MenuItem
-     */
-    public function current(): MenuItem
-    {
-        return $this->collection[$this->index];
-    }
-
-    /**
-     * Key iterator method.
-     *
-     * @return int
-     */
-    public function key(): int
-    {
-        return $this->index;
-    }
-
-    /**
-     * Next iterator method.
-     *
-     * @return void
-     */
-    public function next(): void
-    {
-        $this->index++;
-    }
-
-    /**
-     * Rewind iterator method.
-     *
-     * @return void
-     */
-    public function rewind(): void
-    {
-        $this->index = 0;
-    }
-
-    /**
-     * Valid iterator method.
-     *
-     * @return bool
-     */
-    public function valid(): bool
-    {
-        return ($this->index < $this->count);
-    }
-
-    /**
-     * Count countable method.
-     *
-     * @return int
-     */
-    public function count(): int
-    {
-        return $this->count;
+        return $this->getItem($name);
     }
 }

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -6,6 +6,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace Eureka\Component\Web\Breadcrumb;
 
@@ -17,16 +19,16 @@ namespace Eureka\Component\Web\Breadcrumb;
 class BreadcrumbItem
 {
     /** @var string $name Item name */
-    private $name = '';
+    private string $name = '';
 
     /** @var string $icon Item icon */
-    private $icon = '';
+    private string $icon = '';
 
     /** @var string $uri Item Uri */
-    private $uri = '';
+    private string $uri = '';
 
     /** @var bool $isActive Item is active ? */
-    private $isActive = false;
+    private bool $isActive = false;
 
     /**
      * BreadcrumbItem constructor.

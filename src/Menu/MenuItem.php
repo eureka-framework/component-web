@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -6,6 +6,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace Eureka\Component\Web\Menu;
 
@@ -17,22 +19,22 @@ namespace Eureka\Component\Web\Menu;
 class MenuItem
 {
     /** @var string $name Menu name */
-    private $name = '';
+    private string $name = '';
 
     /** @var string $icon Menu icon */
-    private $icon = '';
+    private string $icon = '';
 
     /** @var string $uri Menu URI */
-    private $uri = '';
+    private string $uri = '';
 
     /** @var Menu|null $submenu Sub menu. */
-    private $submenu = null;
+    private ?Menu $submenu = null;
 
     /** @var bool $isActive If is currently active */
-    private $isActive = false;
+    private bool $isActive = false;
 
     /** @var bool $isDivider If is divider */
-    private $isDivider = false;
+    private bool $isDivider = false;
 
     /**
      * MenuItem constructor.

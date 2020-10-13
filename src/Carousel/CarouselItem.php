@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -6,6 +6,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace Eureka\Component\Web\Carousel;
 
@@ -17,22 +19,22 @@ namespace Eureka\Component\Web\Carousel;
 class CarouselItem
 {
     /** @var string $title Item title */
-    private $title = '';
+    private string $title = '';
 
     /** @var string $subTitle Item subtitle */
-    private $subTitle = '';
+    private string $subTitle = '';
 
     /** @var string $image Item image */
-    private $image = '';
+    private string $image = '';
 
     /** @var string $linkTitle Item link title */
-    private $linkTitle = '';
+    private string $linkTitle = '';
 
     /** @var string $linkUri Item link Uri */
-    private $linkUri = '';
+    private string $linkUri = '';
 
     /** @var bool $isActive Item is active ? */
-    private $isActive = false;
+    private bool $isActive = false;
 
     /**
      * CarouselItem constructor.

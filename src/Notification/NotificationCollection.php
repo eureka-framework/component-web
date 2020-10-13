@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -7,96 +7,37 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Eureka\Component\Web\Notification;
+
+use Eureka\Component\Web\Collection\AbstractCollection;
 
 /**
  * Breadcrumb class
  *
  * @author  Romain Cottar
  */
-class NotificationCollection implements \Iterator, \Countable
+class NotificationCollection extends AbstractCollection
 {
-    /** @var int $index Current index item. */
-    private $index = 0;
-
-    /** @var int $count Number of notification */
-    private $count = 0;
-
-    /** @var NotificationInterface[] $collection */
-    private $collection = [];
-
     /**
      * Add item.
      *
-     * @param  NotificationInterface $item
-     * @return self
+     * @param NotificationInterface $item
+     * @return $this
      */
-    public function add(NotificationInterface $item): self
+    public function push(NotificationInterface $item): self
     {
-        $this->collection[$this->count] = $item;
-
-        $this->count++;
+        $this->pushItem($item);
 
         return $this;
     }
 
     /**
-     * Current iterator method.
-     *
      * @return NotificationInterface
      */
-    public function current(): NotificationInterface
+    public function pop(): NotificationInterface
     {
-        return $this->collection[$this->index];
-    }
-
-    /**
-     * Key iterator method.
-     *
-     * @return int
-     */
-    public function key(): int
-    {
-        return $this->index;
-    }
-
-    /**
-     * Next iterator method.
-     *
-     * @return void
-     */
-    public function next(): void
-    {
-        $this->index++;
-    }
-
-    /**
-     * Rewind iterator method.
-     *
-     * @return void
-     */
-    public function rewind(): void
-    {
-        $this->index = 0;
-    }
-
-    /**
-     * Valid iterator method.
-     *
-     * @return bool
-     */
-    public function valid(): bool
-    {
-        return ($this->index < $this->count);
-    }
-
-    /**
-     * Count countable method.
-     *
-     * @return int
-     */
-    public function count(): int
-    {
-        return $this->count;
+        return $this->popItem();
     }
 }

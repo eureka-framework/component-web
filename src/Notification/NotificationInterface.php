@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -6,6 +6,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace Eureka\Component\Web\Notification;
 
@@ -16,18 +18,6 @@ namespace Eureka\Component\Web\Notification;
  */
 interface NotificationInterface
 {
-    /** @var int TYPE_ERROR */
-    public const TYPE_ERROR = 1;
-
-    /** @var int TYPE_WARNING */
-    public const TYPE_WARNING = 2;
-
-    /** @var int TYPE_INFO */
-    public const TYPE_INFO = 3;
-
-    /** @var int TYPE_SUCCESS */
-    public const TYPE_SUCCESS = 4;
-
     /**
      * Get message
      *

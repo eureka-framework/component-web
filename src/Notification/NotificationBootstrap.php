@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Eureka\Component\Web\Notification;
 
 /**
@@ -14,7 +16,7 @@ namespace Eureka\Component\Web\Notification;
  *
  * @author  Romain Cottard
  */
-class NotificationBootstrap extends NotificationAbstract
+class NotificationBootstrap extends AbstractNotification
 {
     /**
      * Get css used.
@@ -24,18 +26,16 @@ class NotificationBootstrap extends NotificationAbstract
     public function getCss(): string
     {
         switch ($this->type) {
-            case self::TYPE_ERROR:
+            case NotificationType::ERROR:
                 $css = 'danger';
                 break;
-            case self::TYPE_WARNING:
+            case NotificationType::WARNING:
                 $css = 'warning';
                 break;
-            case self::TYPE_INFO:
-                $css = 'info';
-                break;
-            case self::TYPE_SUCCESS:
+            case NotificationType::SUCCESS:
                 $css = 'success';
                 break;
+            case NotificationType::INFO:
             default:
                 $css = 'info';
                 break;
@@ -52,18 +52,16 @@ class NotificationBootstrap extends NotificationAbstract
     public function getHeader(): string
     {
         switch ($this->type) {
-            case self::TYPE_ERROR:
+            case NotificationType::ERROR:
                 $header = 'Error!';
                 break;
-            case self::TYPE_WARNING:
+            case NotificationType::WARNING:
                 $header = 'Warning!';
                 break;
-            case self::TYPE_INFO:
-                $header = 'Info';
-                break;
-            case self::TYPE_SUCCESS:
+            case NotificationType::SUCCESS:
                 $header = 'Success';
                 break;
+            case NotificationType::INFO:
             default:
                 $header = 'Info';
                 break;
@@ -80,18 +78,16 @@ class NotificationBootstrap extends NotificationAbstract
     public function getIcon(): string
     {
         switch ($this->type) {
-            case self::TYPE_ERROR:
+            case NotificationType::ERROR:
                 $icon = 'ban';
                 break;
-            case self::TYPE_WARNING:
+            case NotificationType::WARNING:
                 $icon = 'warning';
                 break;
-            case self::TYPE_INFO:
-                $icon = 'info';
-                break;
-            case self::TYPE_SUCCESS:
+            case NotificationType::SUCCESS:
                 $icon = 'check';
                 break;
+            case NotificationType::INFO:
             default:
                 $icon = 'info';
                 break;

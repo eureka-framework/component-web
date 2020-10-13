@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -6,6 +6,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace Eureka\Component\Web\Menu;
 
@@ -19,16 +21,16 @@ use Psr\Http\Message\ServerRequestInterface;
 trait MenuControllerAwareTrait
 {
     /** @var string $menuStateClosed */
-    private static $menuStateClosed = 'closed';
+    private static string $menuStateClosed = 'closed';
 
     /** @var array $menuConfigMain */
-    private $menuConfigMain;
+    private array $menuConfigMain;
 
     /** @var array $menuConfigSecondary */
-    private $menuConfigSecondary;
+    private array $menuConfigSecondary;
 
     /** @var string $cookieMenuStateName */
-    private $cookieMenuStateName = '';
+    private string $cookieMenuStateName = '';
 
     /**
      * @param array $menuConfigMain
@@ -64,21 +66,9 @@ trait MenuControllerAwareTrait
             }
             $menuRoute = $data['route'] ?? null;
 
-            if (isset($data['route'])) {
-                if (mb_substr($data['route'], 0, 4) === 'http') {
-                    $menuUri = $data['route'];
-                } elseif (mb_substr($data['route'], 0, 1) === '#') {
-                    $menuUri = 'javascript::void(0);';
-                } else {
-                    $menuUri = isset($data['route']) ? $this->getRouteUri($data['route']) : '#';
-                }
-            } else {
-                $menuUri = '#';
-            }
-
             $item = new MenuItem($data['label']);
             $item
-                ->setUri($menuUri)
+                ->setUri($this->getMenuUri($menuRoute))
                 ->setIcon(isset($data['icon']) ? $data['icon'] : '')
                 ->setIsActive($menuRoute === $currentRoute)
             ;
@@ -87,7 +77,7 @@ trait MenuControllerAwareTrait
                 $item->setSubmenu($this->getSubMenu($data['children'], $item, $currentRoute));
             }
 
-            $menu->add($item);
+            $menu->push($item);
         }
 
         return $menu;
@@ -139,9 +129,30 @@ trait MenuControllerAwareTrait
                 $parent->setIsActive(true);
             }
 
-            $menu->add($item);
+            $menu->push($item);
         }
 
         return $menu;
+    }
+
+    /**
+     * @param string|null $menuRoute
+     * @return string
+     */
+    private function getMenuUri(?string $menuRoute): string
+    {
+        if (empty($menuRoute)) {
+            $menuRoute = '#';
+        }
+
+        if (mb_substr($menuRoute, 0, 4) === 'http') {
+            $menuUri = $menuRoute;
+        } elseif (mb_substr($menuRoute, 0, 1) === '#') {
+            $menuUri = 'javascript::void(0);';
+        } else {
+            $menuUri = $this->getRouteUri($menuRoute);
+        }
+
+        return $menuUri;
     }
 }

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Eureka\Component\Web\Notification;
 
 /**
@@ -14,21 +16,21 @@ namespace Eureka\Component\Web\Notification;
  *
  * @author Romain Cottard
  */
-abstract class NotificationAbstract implements NotificationInterface
+abstract class AbstractNotification implements NotificationInterface
 {
     /** @var string $message Message */
-    protected $message = '';
+    protected string $message = '';
 
-    /** @var int $type Notification type */
-    protected $type;
+    /** @var string $type Notification type */
+    protected string $type;
 
     /**
      * Notification constructor.
      *
      * @param string $message
-     * @param int $type
+     * @param string $type
      */
-    public function __construct(string $message, int $type = self::TYPE_SUCCESS)
+    public function __construct(string $message, string $type = NotificationType::SUCCESS)
     {
         $this->setMessage($message);
         $this->setType($type);
@@ -47,9 +49,9 @@ abstract class NotificationAbstract implements NotificationInterface
     /**
      * Get Type
      *
-     * @return int
+     * @return string
      */
-    public function getType(): int
+    public function getType(): string
     {
         return $this->type;
     }
@@ -70,10 +72,10 @@ abstract class NotificationAbstract implements NotificationInterface
     /**
      * Set type
      *
-     * @param  int $type
+     * @param  string $type
      * @return self
      */
-    public function setType(int $type): self
+    public function setType(string $type): self
     {
         $this->type = $type;
 
