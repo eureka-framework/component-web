@@ -15,35 +15,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
  * Global collection abstract class
  * Added tests
 ### Removed
- * Flash notifications (now handled directly in session trait + session)
+ * Flash notification class (now handled directly in session trait + session)
+ * Compilation for phar archive: this component must be included with composer
 
 
-
-## [1.2.2] - 2020-02-14
+## [3.x.y] Release v3.x.y
 ### Changed
- * Exclude logged route
- 
-## [1.2.1] - 2019-11-23
-### Changed
- * Fix breadcrumb
+ * Now require PHP 7+ (for classes Table\*)
+ * Add new Table\* classes to manage table in CLI more properly
+ * Allow multiple base namespace
+ * Add Eureka\Component as default
 
-## [1.2.0] - 2019-09-12
+## [2.x.y] Release v2.x.y
 ### Changed
- * Menu can have secondary menu
- * Carousel: add getSubtitle method & set title as optional
-
-
-
-## [1.1.1] - 2019-07-08
-### Changed
- * Fix method name according to new http kernel version
- 
-## [1.1.0] - 2019-06-07
-### Changed
- * Force strict type hinting
+  * Move code
+  * Separate Style & Color
+  * Move compilation code
+  * Some update / fix
+  * Update phpdoc
 ### Added
- * Add carousel classes
-
+  * Add Table cli generation
+ 
 
 
 ## [1.0.0] - 2019-04-03

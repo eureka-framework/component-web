@@ -117,6 +117,5 @@ class BreadcrumbTest extends TestCase
         $this->assertSame('icon', $item->getIcon());
         $this->assertSame('uri', $item->getUri());
         $this->assertTrue($item->isActive());
-
     }
 }

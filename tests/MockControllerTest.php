@@ -26,9 +26,9 @@ use PHPUnit\Framework\TestCase;
  */
 class MockControllerTest extends TestCase
 {
-    use MenuControllerAwareTrait,
-        MetaControllerAwareTrait,
-        SessionAwareTrait;
+    use MenuControllerAwareTrait;
+    use MetaControllerAwareTrait;
+    use SessionAwareTrait;
 
     /**
      * @return void
@@ -87,7 +87,7 @@ class MockControllerTest extends TestCase
         $this->assertEquals('test', $meta['title']);
     }
 
-    public function testICanSetMenuConfigAndGetPartialMenuCollectionWhenIAmNotLogged():void
+    public function testICanSetMenuConfigAndGetPartialMenuCollectionWhenIAmNotLogged(): void
     {
         $this->setMenuConfig($this->getTestMenuConfig(), 'open', []);
 
@@ -104,7 +104,7 @@ class MockControllerTest extends TestCase
         $this->assertNull($subMenu->get('Sub Test 4'));
     }
 
-    public function testICanSetMenuConfigAndGetCompleteMenuCollectionWhenIAmLogged():void
+    public function testICanSetMenuConfigAndGetCompleteMenuCollectionWhenIAmLogged(): void
     {
         $this->setMenuConfig($this->getTestMenuConfig(), 'open', []);
 
