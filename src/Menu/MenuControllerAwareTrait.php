@@ -74,7 +74,7 @@ trait MenuControllerAwareTrait
             ;
 
             if (!empty($data['children'])) {
-                $item->setSubmenu($this->getSubMenu($data['children'], $item, $currentRoute));
+                $item->setSubmenu($this->getSubMenu($data['children'], $item, $currentRoute, $isLogged));
             }
 
             $menu->push($item);
@@ -86,6 +86,7 @@ trait MenuControllerAwareTrait
     /**
      * @param null|ServerRequestInterface $request
      * @return string
+     * @codeCoverageIgnore
      */
     protected function getMenuState(?ServerRequestInterface $request): string
     {
@@ -108,14 +109,20 @@ trait MenuControllerAwareTrait
      * @param array $children
      * @param MenuItem $parent
      * @param string $currentRoute
+     * @param bool $isLogged
      * @return Menu
      */
-    private function getSubMenu(array $children, MenuItem $parent, string $currentRoute): Menu
+    private function getSubMenu(array $children, MenuItem $parent, string $currentRoute, bool $isLogged = false): Menu
     {
         $menu = new Menu();
         foreach ($children as $data) {
-            $menuRoute = isset($data['route']) ? $data['route'] : null;
-            $menuUri   = $menuRoute !== null ? $this->getRouteUri($data['route']) : '#';
+            $mustBeLogged = (bool) ($data['mustBeLogged'] ?? false);
+            if ($mustBeLogged && !$isLogged) {
+                continue;
+            }
+
+            $menuRoute = $data['route'] ?? null;
+            $menuUri   = $this->getMenuUri($menuRoute);
 
             $item = new MenuItem($data['label']);
             $item
@@ -148,7 +155,7 @@ trait MenuControllerAwareTrait
         if (mb_substr($menuRoute, 0, 4) === 'http') {
             $menuUri = $menuRoute;
         } elseif (mb_substr($menuRoute, 0, 1) === '#') {
-            $menuUri = 'javascript::void(0);';
+            $menuUri = 'javascript:void(0);';
         } else {
             $menuUri = $this->getRouteUri($menuRoute);
         }

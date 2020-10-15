@@ -20,8 +20,8 @@ use Eureka\Component\Web\Notification\NotificationType;
  */
 trait SessionAwareTrait
 {
-    /** @var Session session */
-    protected Session $session;
+    /** @var Session|null session */
+    protected ?Session $session = null;
 
     /**
      * @param Session $session
@@ -74,7 +74,7 @@ trait SessionAwareTrait
      * @param string $type
      * @return array
      */
-    public function get(string $type = NotificationType::SUCCESS): array
+    public function getFlashNotification(string $type = NotificationType::SUCCESS): array
     {
         return $this->session->getFlash($type, []);
     }
@@ -82,11 +82,11 @@ trait SessionAwareTrait
     /**
      * @return \stdClass
      */
-    public function getAll(): \stdClass
+    public function getAllFlashNotification(): \stdClass
     {
         $notifications = new \stdClass();
         foreach (NotificationType::LIST as $type) {
-            $notifications->$type = $this->get($type);
+            $notifications->$type = $this->getFlashNotification($type);
         }
 
         return $notifications;

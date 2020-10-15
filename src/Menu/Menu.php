@@ -37,9 +37,9 @@ class Menu extends AbstractCollection
      * Get menu item by name.
      *
      * @param  string $name
-     * @return MenuItem
+     * @return MenuItem|null
      */
-    public function get(string $name): MenuItem
+    public function get(string $name): ?MenuItem
     {
         return $this->getItem($name);
     }

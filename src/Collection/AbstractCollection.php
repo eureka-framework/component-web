@@ -11,8 +11,6 @@ declare(strict_types=1);
 
 namespace Eureka\Component\Web\Collection;
 
-use Eureka\Component\Web\Menu\MenuItem;
-
 /**
  * Class AbstractCollection
  *
@@ -119,8 +117,9 @@ class AbstractCollection implements \Iterator, \Countable
      */
     protected function pushItem($item)
     {
+        $itemName = method_exists($item, 'getName') ? $item->getName() : (string) $this->count();
         $this->collection[$this->count] = $item;
-        $this->names[$item->getName()]  = $this->count;
+        $this->names[$itemName]  = $this->count;
 
         $this->count++;
 
@@ -147,6 +146,10 @@ class AbstractCollection implements \Iterator, \Countable
      */
     protected function getItem(string $name)
     {
+        if (!isset($this->names[$name])) {
+            return null;
+        }
+
         $index = $this->names[$name];
 
         return $this->collection[$index];
