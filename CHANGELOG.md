@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
  * New require PHP 7.4+
  * All collections now use an abstract class (menu, breadcrumb, carousel & notifications)
+ * Minor fixed & improvements
 ### Added
  * Session + trait for controller
  * Global collection abstract class
+ * Added tests
 ### Removed
  * Flash notifications (now handled directly in session trait + session)
 
