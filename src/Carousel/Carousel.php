@@ -38,6 +38,9 @@ class Carousel extends AbstractCollection
      */
     public function pop(): CarouselItem
     {
-        return $this->popItem();
+        /** @var CarouselItem $item */
+        $item = $this->popItem();
+
+        return $item;
     }
 }

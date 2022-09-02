@@ -33,9 +33,9 @@ trait SessionAwareTrait
     }
 
     /**
-     * @return Session
+     * @return Session|null
      */
-    protected function getSession(): Session
+    protected function getSession(): ?Session
     {
         return $this->session;
     }
@@ -47,6 +47,11 @@ trait SessionAwareTrait
      */
     public function addFlashNotification(string $message, string $type = NotificationType::SUCCESS): void
     {
+        if ($this->session === null) {
+            return;
+        }
+
+        /** @var array<mixed> $flash */
         $flash   = $this->session->getFlash($type, []);
         $flash[] = $message;
 
@@ -54,29 +59,47 @@ trait SessionAwareTrait
     }
 
     /**
-     * @param array $errors
+     * @param array<mixed> $errors
      * @return void
      */
     public function setFormErrors(array $errors): void
     {
+        if ($this->session === null) {
+            return;
+        }
+
         $this->session->setFlash('_form', $errors);
     }
 
     /**
-     * @return array Form errors
+     * @return array<mixed> Form errors
      */
     public function getFormErrors(): array
     {
-        return $this->session->getFlash('_form', []);
+        if ($this->session === null) {
+            return [];
+        }
+
+        /** @var array<mixed> $data */
+        $data = $this->session->getFlash('_form', []);
+
+        return $data;
     }
 
     /**
      * @param string $type
-     * @return array
+     * @return array<mixed>
      */
     public function getFlashNotification(string $type = NotificationType::SUCCESS): array
     {
-        return $this->session->getFlash($type, []);
+        if ($this->session === null) {
+            return [];
+        }
+
+        /** @var array<mixed> $data */
+        $data = $this->session->getFlash($type, []);
+
+        return $data;
     }
 
     /**
@@ -84,6 +107,10 @@ trait SessionAwareTrait
      */
     public function getAllFlashNotification(): \stdClass
     {
+        if ($this->session === null) {
+            return (object) [];
+        }
+
         $notifications = new \stdClass();
         foreach (NotificationType::LIST as $type) {
             $notifications->$type = $this->getFlashNotification($type);

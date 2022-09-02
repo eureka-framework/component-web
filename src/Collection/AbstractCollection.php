@@ -11,8 +11,14 @@ declare(strict_types=1);
 
 namespace Eureka\Component\Web\Collection;
 
+use Eureka\Component\Web\Breadcrumb\BreadcrumbItem;
+use Eureka\Component\Web\Carousel\CarouselItem;
+use Eureka\Component\Web\Menu\MenuItem;
+use Eureka\Component\Web\Notification\NotificationInterface;
+
 /**
  * Class AbstractCollection
+ * @implements \Iterator<BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface>
  *
  * @author Romain Cottard
  */
@@ -24,7 +30,7 @@ class AbstractCollection implements \Iterator, \Countable
     /** @var int $count Number of element in breadcrumb */
     private int $count = 0;
 
-    /** @var array $collection */
+    /** @var array<BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface> $collection */
     private array $collection = [];
 
     /** @var int[] $names */
@@ -56,6 +62,7 @@ class AbstractCollection implements \Iterator, \Countable
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->collection[$this->index];
@@ -112,10 +119,10 @@ class AbstractCollection implements \Iterator, \Countable
     }
 
     /**
-     * @param $item
+     * @param BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface $item
      * @return $this
      */
-    protected function pushItem($item)
+    protected function pushItem($item): self
     {
         $itemName = method_exists($item, 'getName') ? $item->getName() : (string) $this->count();
         $this->collection[$this->count] = $item;
@@ -127,7 +134,7 @@ class AbstractCollection implements \Iterator, \Countable
     }
 
     /**
-     * @return mixed
+     * @return BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface|null
      */
     protected function popItem()
     {
@@ -142,7 +149,7 @@ class AbstractCollection implements \Iterator, \Countable
      * Get menu item by name.
      *
      * @param  string $name
-     * @return mixed
+     * @return BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface|null
      */
     protected function getItem(string $name)
     {

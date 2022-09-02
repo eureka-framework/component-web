@@ -56,6 +56,7 @@ class BreadcrumbTest extends TestCase
         $breadcrumb->push(new BreadcrumbItem('item 2'));
 
         foreach ($breadcrumb as $index => $item) {
+            /** @var BreadcrumbItem $item */
             $this->assertEquals('item ' . ($index + 1), $item->getName());
         }
     }

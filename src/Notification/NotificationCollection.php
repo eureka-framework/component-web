@@ -38,6 +38,9 @@ class NotificationCollection extends AbstractCollection
      */
     public function pop(): NotificationInterface
     {
-        return $this->popItem();
+        /** @var NotificationInterface $item */
+        $item = $this->popItem();
+
+        return $item;
     }
 }

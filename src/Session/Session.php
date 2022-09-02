@@ -28,7 +28,7 @@ class Session
     /** @var string VARIABLE Session index name for ephemeral var content. */
     private const VARIABLE = 'var';
 
-    /** @var array|null $session */
+    /** @var array<mixed>|null $session */
     protected static ?array $session = null;
 
     /**
@@ -58,7 +58,7 @@ class Session
     /**
      * If session have given key.
      *
-     * @param  string
+     * @param  string $key
      * @return bool
      */
     public function has(string $key): bool
@@ -70,16 +70,12 @@ class Session
      * Get session value.
      *
      * @param string $key
-     * @param $default
+     * @param mixed $default
      * @return mixed|null
      */
     public function get(string $key, $default = null)
     {
-        if (!$this->has($key)) {
-            return $default;
-        }
-
-        return self::$session[$key];
+        return self::$session[$key] ?? $default;
     }
 
     /**
@@ -121,6 +117,7 @@ class Session
      */
     public function getFlash(string $name, $default = null)
     {
+        /** @var array<array<mixed>> $flash */
         $flash = $this->get(self::FLASH);
         if (!isset($flash[$name][self::VARIABLE]) && !isset($flash[$name])) {
             return $default;
@@ -137,6 +134,7 @@ class Session
      */
     public function hasFlash(string $name): bool
     {
+        /** @var array<mixed> $flash */
         $flash = $this->get(self::FLASH);
 
         return isset($flash[$name]);
@@ -156,6 +154,7 @@ class Session
             return $this;
         }
 
+        /** @var array<array<mixed>> $flash */
         $flash = $this->get(self::FLASH);
         foreach ($flash as $name => &$var) {
             if (true === $var[self::ACTIVE]) {
@@ -180,6 +179,7 @@ class Session
      */
     public function setFlash(string $name, $value): self
     {
+        /** @var array<array<mixed>> $flash */
         $flash = $this->get(self::FLASH);
 
         $flash[$name][self::ACTIVE]   = true;

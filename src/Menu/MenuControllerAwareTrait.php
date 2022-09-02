@@ -23,19 +23,19 @@ trait MenuControllerAwareTrait
     /** @var string $menuStateClosed */
     private static string $menuStateClosed = 'closed';
 
-    /** @var array $menuConfigMain */
+    /** @var array<array<mixed>> $menuConfigMain */
     private array $menuConfigMain;
 
-    /** @var array $menuConfigSecondary */
+    /** @var array<array<mixed>> $menuConfigSecondary */
     private array $menuConfigSecondary;
 
     /** @var string $cookieMenuStateName */
     private string $cookieMenuStateName = '';
 
     /**
-     * @param array $menuConfigMain
+     * @param array<array<mixed>> $menuConfigMain
      * @param string $cookieMenuStateName
-     * @param array $menuConfigSecondary
+     * @param array<array<mixed>> $menuConfigSecondary
      * @return void
      */
     public function setMenuConfig(array $menuConfigMain, string $cookieMenuStateName = '', array $menuConfigSecondary = []): void
@@ -69,7 +69,7 @@ trait MenuControllerAwareTrait
             $item = new MenuItem($data['label']);
             $item
                 ->setUri($this->getMenuUri($menuRoute))
-                ->setIcon(isset($data['icon']) ? $data['icon'] : '')
+                ->setIcon($data['icon'] ?? '')
                 ->setIsActive($menuRoute === $currentRoute)
             ;
 
@@ -84,7 +84,7 @@ trait MenuControllerAwareTrait
     }
 
     /**
-     * @param null|ServerRequestInterface $request
+     * @param ServerRequestInterface|null $request
      * @return string
      * @codeCoverageIgnore
      */
@@ -106,7 +106,7 @@ trait MenuControllerAwareTrait
     }
 
     /**
-     * @param array $children
+     * @param array<array<mixed>> $children
      * @param MenuItem $parent
      * @param string $currentRoute
      * @param bool $isLogged
@@ -126,9 +126,9 @@ trait MenuControllerAwareTrait
 
             $item = new MenuItem($data['label']);
             $item
-                ->setIsDivider((isset($data['divider']) ? (bool) $data['divider'] : false))
+                ->setIsDivider((isset($data['divider']) && (bool) $data['divider']))
                 ->setUri($menuUri)
-                ->setIcon(isset($data['icon']) ? $data['icon'] : '')
+                ->setIcon($data['icon'] ?? '')
                 ->setIsActive($currentRoute === $menuRoute)
             ;
 

@@ -41,6 +41,7 @@ class MenuTest extends TestCase
         $menu->push(new MenuItem('item 1'));
         $menu->push(new MenuItem('item 2'));
 
+        /** @var MenuItem $item */
         $item = $menu->get('item 2');
 
         $this->assertEquals('item 2', $item->getName());
@@ -56,6 +57,7 @@ class MenuTest extends TestCase
         $menu->push(new MenuItem('item 2'));
 
         foreach ($menu as $index => $item) {
+            /** @var MenuItem $item */
             $this->assertEquals('item ' . ($index + 1), $item->getName());
         }
     }

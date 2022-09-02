@@ -38,6 +38,9 @@ class Breadcrumb extends AbstractCollection
      */
     public function pop(): BreadcrumbItem
     {
-        return $this->popItem();
+        /** @var BreadcrumbItem $item */
+        $item = $this->popItem();
+
+        return $item;
     }
 }

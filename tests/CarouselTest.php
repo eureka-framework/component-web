@@ -56,6 +56,7 @@ class CarouselTest extends TestCase
         $carousel->push(new CarouselItem('item 2'));
 
         foreach ($carousel as $index => $item) {
+            /** @var CarouselItem $item */
             $this->assertEquals('item ' . ($index + 1), $item->getTitle());
         }
     }

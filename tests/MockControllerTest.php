@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Eureka\Component\Web\Tests;
 
+use Eureka\Component\Web\Menu\Menu;
 use Eureka\Component\Web\Menu\MenuControllerAwareTrait;
 use Eureka\Component\Web\Menu\MenuItem;
 use Eureka\Component\Web\Meta\MetaControllerAwareTrait;
@@ -82,17 +83,17 @@ class MockControllerTest extends TestCase
 
         $meta = $this->getMeta();
 
-        $this->assertEquals(date('Y'), $meta['copyright']['year']);
-        $this->assertEquals('me', $meta['copyright']['name']);
-        $this->assertEquals('test', $meta['title']);
+        $this->assertEquals(date('Y'), $meta['copyright']['year'] ?? '');
+        $this->assertEquals('me', $meta['copyright']['name'] ?? '');
+        $this->assertEquals('test', $meta['title'] ?? '');
     }
 
     public function testICanSetMenuConfigAndGetPartialMenuCollectionWhenIAmNotLogged(): void
     {
         $this->setMenuConfig($this->getTestMenuConfig(), 'open', []);
 
-        $menu    = $this->getMenu(true, false);
-        $subMenu = $menu->get('Test')->getSubmenu();
+        $menu    = $this->getMenu();
+        $subMenu = $menu->get('Test') && $menu->get('Test')->getSubmenu() ? $menu->get('Test')->getSubmenu() : new Menu();
 
         $this->assertInstanceOf(MenuItem::class, $menu->get('Home'));
         $this->assertInstanceOf(MenuItem::class, $menu->get('Test'));
@@ -110,7 +111,7 @@ class MockControllerTest extends TestCase
 
         $menu = $this->getMenu(true, true);
 
-        $item1 = $menu->get('Home');
+        $item1 = $menu->get('Home') ?? new MenuItem('void');
         $this->assertEquals('Home', $item1->getName());
         $this->assertEquals('', $item1->getIcon());
         $this->assertEquals('/home', $item1->getUri());
@@ -118,7 +119,7 @@ class MockControllerTest extends TestCase
         $this->assertFalse($item1->hasIcon());
         $this->assertFalse($item1->isActive());
 
-        $item2 = $menu->get('Test');
+        $item2 = $menu->get('Test') ?? new MenuItem('void');
         $this->assertEquals('Test', $item2->getName());
         $this->assertEquals('ico', $item2->getIcon());
         $this->assertEquals('javascript:void(0);', $item2->getUri());
@@ -126,7 +127,7 @@ class MockControllerTest extends TestCase
         $this->assertTrue($item2->hasIcon());
         $this->assertTrue($item2->isActive());
 
-        $item3 = $menu->get('Logged');
+        $item3 = $menu->get('Logged') ?? new MenuItem('void');
         $this->assertEquals('Logged', $item3->getName());
         $this->assertEquals('', $item3->getIcon());
         $this->assertEquals('/home', $item3->getUri());
@@ -134,7 +135,7 @@ class MockControllerTest extends TestCase
         $this->assertFalse($item3->hasIcon());
         $this->assertFalse($item3->isActive());
 
-        $subItem1 = $item2->getSubmenu()->get('Sub Test 1');
+        $subItem1 = $item2->getSubmenu() && $item2->getSubmenu()->get('Sub Test 1') ? $item2->getSubmenu()->get('Sub Test 1') :  new MenuItem('void');
         $this->assertEquals('Sub Test 1', $subItem1->getName());
         $this->assertEquals('', $subItem1->getIcon());
         $this->assertEquals('javascript:void(0);', $subItem1->getUri());
@@ -142,7 +143,7 @@ class MockControllerTest extends TestCase
         $this->assertFalse($subItem1->hasIcon());
         $this->assertFalse($subItem1->isActive());
 
-        $subItem2 = $item2->getSubmenu()->get('Sub Test 2');
+        $subItem2 = $item2->getSubmenu() && $item2->getSubmenu()->get('Sub Test 2') ? $item2->getSubmenu()->get('Sub Test 2') :  new MenuItem('void');
         $this->assertEquals('Sub Test 2', $subItem2->getName());
         $this->assertEquals('', $subItem2->getIcon());
         $this->assertEquals('http://external.com', $subItem2->getUri());
@@ -150,7 +151,7 @@ class MockControllerTest extends TestCase
         $this->assertFalse($subItem2->hasIcon());
         $this->assertFalse($subItem2->isActive());
 
-        $subItem3 = $item2->getSubmenu()->get('Sub Test 3');
+        $subItem3 = $item2->getSubmenu() && $item2->getSubmenu()->get('Sub Test 3') ? $item2->getSubmenu()->get('Sub Test 3') :  new MenuItem('void');
         $this->assertEquals('Sub Test 3', $subItem3->getName());
         $this->assertEquals('', $subItem3->getIcon());
         $this->assertEquals('/home', $subItem3->getUri());
@@ -158,7 +159,7 @@ class MockControllerTest extends TestCase
         $this->assertFalse($subItem3->hasIcon());
         $this->assertTrue($subItem3->isActive());
 
-        $subItem4 = $item2->getSubmenu()->get('Sub Test 4');
+        $subItem4 = $item2->getSubmenu() && $item2->getSubmenu()->get('Sub Test 4') ? $item2->getSubmenu()->get('Sub Test 4') :  new MenuItem('void');
         $this->assertEquals('Sub Test 4', $subItem4->getName());
         $this->assertEquals('', $subItem4->getIcon());
         $this->assertEquals('/home', $subItem4->getUri());
@@ -169,7 +170,7 @@ class MockControllerTest extends TestCase
     /**
      * Emulate getRoute() in application.
      *
-     * @return array
+     * @return array<string,string>
      */
     protected function getRoute(): array
     {
@@ -182,7 +183,7 @@ class MockControllerTest extends TestCase
      * Emulate getRouteUri() in application.
      *
      * @param string $routeName
-     * @param array $params
+     * @param array<string> $params
      * @return string
      */
     protected function getRouteUri(string $routeName, array $params = []): string
@@ -191,7 +192,7 @@ class MockControllerTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<array<mixed>>
      */
     private function getTestMenuConfig(): array
     {

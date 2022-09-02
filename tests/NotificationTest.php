@@ -13,6 +13,7 @@ namespace Eureka\Component\Web\Tests;
 
 use Eureka\Component\Web\Notification\NotificationCollection;
 use Eureka\Component\Web\Notification\NotificationBootstrap;
+use Eureka\Component\Web\Notification\NotificationInterface;
 use Eureka\Component\Web\Notification\NotificationType;
 use PHPUnit\Framework\TestCase;
 
@@ -56,6 +57,7 @@ class NotificationTest extends TestCase
         $notifications->push(new NotificationBootstrap('item 1'));
         $notifications->push(new NotificationBootstrap('item 2'));
 
+        /** @var NotificationInterface $item */
         foreach ($notifications as $index => $item) {
             $this->assertEquals('item ' . ($index + 1), $item->getMessage());
         }
@@ -130,7 +132,7 @@ class NotificationTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<string, string[]>
      */
     public function dataProviderNotification(): array
     {
