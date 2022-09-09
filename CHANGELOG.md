@@ -4,16 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.2.0] - 2022-09-09
+[5.2.0]: https://github.com/eureka-framework/component-web/compare/5.1.0...5.2.0
+### Added
+ * Menu: Support of route parameters in menu yaml file 
 
 ## [5.1.0] - 2022-09-02
-[5.2.0]: https://github.com/eureka-framework/component-web/compare/5.0.1...5.1.0
+[5.1.0]: https://github.com/eureka-framework/component-web/compare/5.0.1...5.1.0
 ### Changed
-* CI improvements (php compatibility check, makefile, github workflow)
-* Now compatible with PHP 7.4, 8.0 & 8.1
+ * CI improvements (php compatibility check, makefile, github workflow)
+ * Now compatible with PHP 7.4, 8.0 & 8.1
 ### Added
-* phpstan for static analysis
+ * phpstan for static analysis
 ### Removed
-* phpcompatibility (no more maintained)
+ * phpcompatibility (no more maintained)
 
 ## [5.0.1] - 2020-10-29
 ### Changed
