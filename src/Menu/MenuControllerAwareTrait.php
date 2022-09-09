@@ -64,11 +64,12 @@ trait MenuControllerAwareTrait
             if ($mustBeLogged && !$isLogged) {
                 continue;
             }
-            $menuRoute = $data['route'] ?? null;
+            $menuRoute       = $data['route'] ?? null;
+            $menuRouteParams = $data['route_params'] ?? [];
 
             $item = new MenuItem($data['label']);
             $item
-                ->setUri($this->getMenuUri($menuRoute))
+                ->setUri($this->getMenuUri($menuRoute, $menuRouteParams))
                 ->setIcon($data['icon'] ?? '')
                 ->setIsActive($menuRoute === $currentRoute)
             ;
@@ -121,8 +122,9 @@ trait MenuControllerAwareTrait
                 continue;
             }
 
-            $menuRoute = $data['route'] ?? null;
-            $menuUri   = $this->getMenuUri($menuRoute);
+            $menuRoute       = $data['route'] ?? null;
+            $menuRouteParams = $data['route_params'] ?? [];
+            $menuUri         = $this->getMenuUri($menuRoute, $menuRouteParams);
 
             $item = new MenuItem($data['label']);
             $item
@@ -144,9 +146,10 @@ trait MenuControllerAwareTrait
 
     /**
      * @param string|null $menuRoute
+     * @param array<string> $menuRouteParams
      * @return string
      */
-    private function getMenuUri(?string $menuRoute): string
+    private function getMenuUri(?string $menuRoute, array $menuRouteParams = []): string
     {
         if (empty($menuRoute)) {
             $menuRoute = '#';
@@ -157,7 +160,7 @@ trait MenuControllerAwareTrait
         } elseif (mb_substr($menuRoute, 0, 1) === '#') {
             $menuUri = 'javascript:void(0);';
         } else {
-            $menuUri = $this->getRouteUri($menuRoute);
+            $menuUri = $this->getRouteUri($menuRoute, $menuRouteParams);
         }
 
         return $menuUri;
