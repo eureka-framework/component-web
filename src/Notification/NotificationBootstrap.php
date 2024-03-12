@@ -25,23 +25,12 @@ class NotificationBootstrap extends AbstractNotification
      */
     public function getCss(): string
     {
-        switch ($this->type) {
-            case NotificationType::ERROR:
-                $css = 'danger';
-                break;
-            case NotificationType::WARNING:
-                $css = 'warning';
-                break;
-            case NotificationType::SUCCESS:
-                $css = 'success';
-                break;
-            case NotificationType::INFO:
-            default:
-                $css = 'info';
-                break;
-        }
-
-        return $css;
+        return match ($this->type) {
+            NotificationType::Error   => 'danger',
+            NotificationType::Warning => 'warning',
+            NotificationType::Success => 'success',
+            default                   => 'info',
+        };
     }
 
     /**
@@ -51,23 +40,12 @@ class NotificationBootstrap extends AbstractNotification
      */
     public function getHeader(): string
     {
-        switch ($this->type) {
-            case NotificationType::ERROR:
-                $header = 'Error!';
-                break;
-            case NotificationType::WARNING:
-                $header = 'Warning!';
-                break;
-            case NotificationType::SUCCESS:
-                $header = 'Success';
-                break;
-            case NotificationType::INFO:
-            default:
-                $header = 'Info';
-                break;
-        }
-
-        return $header;
+        return match ($this->type) {
+            NotificationType::Error   => 'Error!',
+            NotificationType::Warning => 'Warning!',
+            NotificationType::Success => 'Success',
+            default                   => 'Info',
+        };
     }
 
     /**
@@ -77,22 +55,11 @@ class NotificationBootstrap extends AbstractNotification
      */
     public function getIcon(): string
     {
-        switch ($this->type) {
-            case NotificationType::ERROR:
-                $icon = 'ban';
-                break;
-            case NotificationType::WARNING:
-                $icon = 'warning';
-                break;
-            case NotificationType::SUCCESS:
-                $icon = 'check';
-                break;
-            case NotificationType::INFO:
-            default:
-                $icon = 'info';
-                break;
-        }
-
-        return $icon;
+        return match ($this->type) {
+            NotificationType::Error   => 'ban',
+            NotificationType::Warning => 'warning',
+            NotificationType::Success => 'check',
+            default                   => 'info',
+        };
     }
 }

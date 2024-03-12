@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Eureka\Component\Web\Tests;
+namespace Eureka\Component\Web\Tests\Unit;
 
 use Eureka\Component\Web\Notification\NotificationCollection;
 use Eureka\Component\Web\Notification\NotificationBootstrap;
@@ -73,7 +73,6 @@ class NotificationTest extends TestCase
         $notifications->push(new NotificationBootstrap('item 2'));
 
         $this->assertCount(2, $notifications);
-        $this->assertEquals(2, count($notifications));
     }
 
     /**
@@ -106,18 +105,11 @@ class NotificationTest extends TestCase
     }
 
     /**
-     * @param string $message
-     * @param string $type
-     * @param string $css
-     * @param string $icon
-     * @param string $header
-     * @return void
-     *
      * @dataProvider dataProviderNotification
      */
     public function testICanSetAndRetrieveAllInformationOnItem(
         string $message,
-        string $type,
+        NotificationType $type,
         string $css,
         string $icon,
         string $header
@@ -129,38 +121,43 @@ class NotificationTest extends TestCase
         $this->assertSame($css, $notification->getCss());
         $this->assertSame($icon, $notification->getIcon());
         $this->assertSame($header, $notification->getHeader());
+
+        $notification->setMessage($message);
+        $notification->setType($type);
+        $this->assertSame($message, $notification->getMessage());
+        $this->assertSame($type, $notification->getType());
     }
 
     /**
-     * @return array<string, string[]>
+     * @return array<string, array{0: string, 1: NotificationType, 2: string, 3: string, 4: string}>
      */
-    public function dataProviderNotification(): array
+    public static function dataProviderNotification(): array
     {
         return [
             'Type info' => [
                 'notification success',
-                NotificationType::INFO,
+                NotificationType::Info,
                 'info', // css
                 'info', // icon
                 'Info', // header
             ],
             'Type success' => [
                 'notification success',
-                NotificationType::SUCCESS,
+                NotificationType::Success,
                 'success', // css
                 'check', // icon
                 'Success', // header
             ],
             'Type warning' => [
                 'notification warning',
-                NotificationType::WARNING,
+                NotificationType::Warning,
                 'warning', // css
                 'warning', // icon
                 'Warning!', // header
             ],
             'Type error' => [
                 'notification error',
-                NotificationType::ERROR,
+                NotificationType::Error,
                 'danger', // css
                 'ban', // icon
                 'Error!', // header

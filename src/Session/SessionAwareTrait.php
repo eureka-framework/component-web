@@ -21,7 +21,7 @@ use Eureka\Component\Web\Notification\NotificationType;
 trait SessionAwareTrait
 {
     /** @var Session|null session */
-    protected ?Session $session = null;
+    protected Session|null $session = null;
 
     /**
      * @param Session $session
@@ -32,30 +32,22 @@ trait SessionAwareTrait
         $this->session = $session;
     }
 
-    /**
-     * @return Session|null
-     */
-    protected function getSession(): ?Session
+    protected function getSession(): Session|null
     {
         return $this->session;
     }
 
-    /**
-     * @param string $message
-     * @param string $type
-     * @return void
-     */
-    public function addFlashNotification(string $message, string $type = NotificationType::SUCCESS): void
+    public function addFlashNotification(string $message, NotificationType $type): void
     {
         if ($this->session === null) {
             return;
         }
 
         /** @var array<mixed> $flash */
-        $flash   = $this->session->getFlash($type, []);
+        $flash   = $this->session->getFlash($type->value, []);
         $flash[] = $message;
 
-        $this->session->setFlash($type, $flash);
+        $this->session->setFlash($type->value, $flash);
     }
 
     /**
@@ -87,24 +79,20 @@ trait SessionAwareTrait
     }
 
     /**
-     * @param string $type
      * @return array<mixed>
      */
-    public function getFlashNotification(string $type = NotificationType::SUCCESS): array
+    public function getFlashNotification(NotificationType $type): array
     {
         if ($this->session === null) {
             return [];
         }
 
         /** @var array<mixed> $data */
-        $data = $this->session->getFlash($type, []);
+        $data = $this->session->getFlash($type->value, []);
 
         return $data;
     }
 
-    /**
-     * @return \stdClass
-     */
     public function getAllFlashNotification(): \stdClass
     {
         if ($this->session === null) {
@@ -112,8 +100,8 @@ trait SessionAwareTrait
         }
 
         $notifications = new \stdClass();
-        foreach (NotificationType::LIST as $type) {
-            $notifications->$type = $this->getFlashNotification($type);
+        foreach (NotificationType::List as $type) {
+            $notifications->{$type->value} = $this->getFlashNotification($type);
         }
 
         return $notifications;

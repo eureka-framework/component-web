@@ -73,7 +73,7 @@ class Session
      * @param mixed $default
      * @return mixed|null
      */
-    public function get(string $key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         return self::$session[$key] ?? $default;
     }
@@ -85,7 +85,7 @@ class Session
      * @param  mixed $value
      * @return self
      */
-    public function set(string $key, $value): self
+    public function set(string $key, mixed $value): self
     {
         self::$session[$key] = $value;
 
@@ -115,7 +115,7 @@ class Session
      * @param mixed|null $default
      * @return mixed  Variable value.
      */
-    public function getFlash(string $name, $default = null)
+    public function getFlash(string $name, mixed $default = null): mixed
     {
         /** @var array<array<mixed>> $flash */
         $flash = $this->get(self::FLASH);
@@ -177,7 +177,7 @@ class Session
      * @param  mixed $value
      * @return $this
      */
-    public function setFlash(string $name, $value): self
+    public function setFlash(string $name, mixed $value): self
     {
         /** @var array<array<mixed>> $flash */
         $flash = $this->get(self::FLASH);
