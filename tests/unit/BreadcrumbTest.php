@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Eureka\Component\Web\Tests;
+namespace Eureka\Component\Web\Tests\Unit;
 
 use Eureka\Component\Web\Breadcrumb\Breadcrumb;
 use Eureka\Component\Web\Breadcrumb\BreadcrumbItem;

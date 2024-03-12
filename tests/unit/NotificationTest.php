@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Eureka\Component\Web\Tests;
+namespace Eureka\Component\Web\Tests\Unit;
 
 use Eureka\Component\Web\Notification\NotificationCollection;
 use Eureka\Component\Web\Notification\NotificationBootstrap;
@@ -73,7 +73,6 @@ class NotificationTest extends TestCase
         $notifications->push(new NotificationBootstrap('item 2'));
 
         $this->assertCount(2, $notifications);
-        $this->assertEquals(2, count($notifications));
     }
 
     /**
@@ -134,7 +133,7 @@ class NotificationTest extends TestCase
     /**
      * @return array<string, string[]>
      */
-    public function dataProviderNotification(): array
+    public static function dataProviderNotification(): array
     {
         return [
             'Type info' => [

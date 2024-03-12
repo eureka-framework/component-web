@@ -19,19 +19,19 @@ namespace Eureka\Component\Web\Notification;
 class NotificationType
 {
     /** @var string FLASH_INFO */
-    const INFO    = 'info';
+    public const INFO    = 'info';
 
     /** @var string FLASH_SUCCESS */
-    const SUCCESS = 'success';
+    public const SUCCESS = 'success';
 
     /** @var string FLASH_WARNING */
-    const WARNING = 'warning';
+    public const WARNING = 'warning';
 
     /** @var string FLASH_ERROR */
-    const ERROR   = 'error';
+    public const ERROR   = 'error';
 
     /** @var string[] ALL_FLASH */
-    const LIST = [
+    public const LIST = [
         self::INFO,
         self::SUCCESS,
         self::WARNING,
