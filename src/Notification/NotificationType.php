@@ -16,25 +16,18 @@ namespace Eureka\Component\Web\Notification;
  *
  * @author Romain Cottard
  */
-class NotificationType
+enum NotificationType: string
 {
-    /** @var string FLASH_INFO */
-    public const INFO    = 'info';
+    case Info    = 'info';
+    case Success = 'success';
+    case Warning = 'warning';
+    case Error   = 'error';
 
-    /** @var string FLASH_SUCCESS */
-    public const SUCCESS = 'success';
-
-    /** @var string FLASH_WARNING */
-    public const WARNING = 'warning';
-
-    /** @var string FLASH_ERROR */
-    public const ERROR   = 'error';
-
-    /** @var string[] ALL_FLASH */
-    public const LIST = [
-        self::INFO,
-        self::SUCCESS,
-        self::WARNING,
-        self::ERROR,
+    /** @var NotificationType[] List */
+    public const List = [
+        self::Info,
+        self::Success,
+        self::Warning,
+        self::Error,
     ];
 }

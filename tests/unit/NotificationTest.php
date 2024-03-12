@@ -105,18 +105,11 @@ class NotificationTest extends TestCase
     }
 
     /**
-     * @param string $message
-     * @param string $type
-     * @param string $css
-     * @param string $icon
-     * @param string $header
-     * @return void
-     *
      * @dataProvider dataProviderNotification
      */
     public function testICanSetAndRetrieveAllInformationOnItem(
         string $message,
-        string $type,
+        NotificationType $type,
         string $css,
         string $icon,
         string $header
@@ -131,35 +124,35 @@ class NotificationTest extends TestCase
     }
 
     /**
-     * @return array<string, string[]>
+     * @return array<string, array{0: string, 1: NotificationType, 2: string, 3: string, 4: string}>
      */
     public static function dataProviderNotification(): array
     {
         return [
             'Type info' => [
                 'notification success',
-                NotificationType::INFO,
+                NotificationType::Info,
                 'info', // css
                 'info', // icon
                 'Info', // header
             ],
             'Type success' => [
                 'notification success',
-                NotificationType::SUCCESS,
+                NotificationType::Success,
                 'success', // css
                 'check', // icon
                 'Success', // header
             ],
             'Type warning' => [
                 'notification warning',
-                NotificationType::WARNING,
+                NotificationType::Warning,
                 'warning', // css
                 'warning', // icon
                 'Warning!', // header
             ],
             'Type error' => [
                 'notification error',
-                NotificationType::ERROR,
+                NotificationType::Error,
                 'danger', // css
                 'ban', // icon
                 'Error!', // header

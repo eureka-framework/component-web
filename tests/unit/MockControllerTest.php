@@ -46,17 +46,17 @@ class MockControllerTest extends TestCase
     {
         $this->setSession(new Session());
 
-        $this->addFlashNotification('flash notification');
-        $this->assertSame(['flash notification'], $this->getFlashNotification(NotificationType::SUCCESS));
+        $this->addFlashNotification('flash notification', NotificationType::Success);
+        $this->assertSame(['flash notification'], $this->getFlashNotification(NotificationType::Success));
 
-        $this->addFlashNotification('other notification', NotificationType::INFO);
+        $this->addFlashNotification('other notification', NotificationType::Info);
 
         $this->assertEquals(
             (object) [
-                NotificationType::SUCCESS => ['flash notification'],
-                NotificationType::INFO    => ['other notification'],
-                NotificationType::WARNING => [],
-                NotificationType::ERROR   => [],
+                NotificationType::Success->value => ['flash notification'],
+                NotificationType::Info->value    => ['other notification'],
+                NotificationType::Warning->value => [],
+                NotificationType::Error->value   => [],
             ],
             $this->getAllFlashNotification()
         );
@@ -90,7 +90,7 @@ class MockControllerTest extends TestCase
 
     public function testICanSetMenuConfigAndGetPartialMenuCollectionWhenIAmNotLogged(): void
     {
-        $this->setMenuConfig($this->getTestMenuConfig(), 'open', []);
+        $this->setMenuConfig($this->getTestMenuConfig(), 'open');
 
         $menu    = $this->getMenu();
         $subMenu = $menu->get('Test') && $menu->get('Test')->getSubmenu() ? $menu->get('Test')->getSubmenu() : new Menu();
@@ -107,7 +107,7 @@ class MockControllerTest extends TestCase
 
     public function testICanSetMenuConfigAndGetCompleteMenuCollectionWhenIAmLogged(): void
     {
-        $this->setMenuConfig($this->getTestMenuConfig(), 'open', []);
+        $this->setMenuConfig($this->getTestMenuConfig(), 'open');
 
         $menu = $this->getMenu(true, true);
 
