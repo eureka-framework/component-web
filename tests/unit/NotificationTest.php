@@ -121,6 +121,11 @@ class NotificationTest extends TestCase
         $this->assertSame($css, $notification->getCss());
         $this->assertSame($icon, $notification->getIcon());
         $this->assertSame($header, $notification->getHeader());
+
+        $notification->setMessage($message);
+        $notification->setType($type);
+        $this->assertSame($message, $notification->getMessage());
+        $this->assertSame($type, $notification->getType());
     }
 
     /**
