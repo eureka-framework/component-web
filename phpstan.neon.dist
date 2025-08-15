@@ -1,9 +1,10 @@
 includes:
   - ./vendor/phpstan/phpstan-phpunit/extension.neon
   - ./vendor/phpstan/phpstan-phpunit/rules.neon
+  - ./vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
-  phpVersion: 80100
+  phpVersion: 80300
   level: max
   paths:
     - ./src
@@ -12,5 +13,4 @@ parameters:
   bootstrapFiles:
     - ./vendor/autoload.php
 
-  ignoreErrors:
-   -  "`Cannot access offset 'year' on mixed.`"
+  treatPhpDocTypesAsCertain: false

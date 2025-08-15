@@ -14,62 +14,38 @@ namespace Eureka\Component\Web\Tests\Unit;
 use Eureka\Component\Web\Session\Session;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class SessionTest
- *
- * @author Romain Cottard
- */
 class SessionTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function testICanInitializeSessionService(): void
-    {
-        $session = new Session();
-
-        $this->assertInstanceOf(Session::class, $session);
-    }
-
-    /**
-     * @return void
-     */
     public function testICanSetAndRetrieveValueInSession(): void
     {
         $session = new Session();
 
-        $this->assertFalse($session->has('foo'));
+        self::assertFalse($session->has('foo'));
 
         $session->set('foo', 'bar');
-        $this->assertTrue($session->has('foo'));
-        $this->assertEquals('bar', $session->get('foo'));
-        $this->assertEquals('baz', $session->get('foz', 'baz'));
+        self::assertTrue($session->has('foo'));
+        self::assertEquals('bar', $session->get('foo'));
+        self::assertEquals('baz', $session->get('foz', 'baz'));
 
         $session->remove('foo');
-        $this->assertFalse($session->has('foo'));
+        self::assertFalse($session->has('foo'));
     }
 
-    /**
-     * @return void
-     */
     public function testICanSetAndRetrieveEphemeralValueInSession(): void
     {
         $session = new Session();
 
-        $this->assertFalse($session->hasFlash('foo'));
+        self::assertFalse($session->hasFlash('foo'));
 
         $session->setFlash('foo', 'bar');
-        $this->assertTrue($session->hasFlash('foo'));
-        $this->assertEquals('bar', $session->getFlash('foo'));
-        $this->assertEquals('baz', $session->getFlash('foz', 'baz'));
+        self::assertTrue($session->hasFlash('foo'));
+        self::assertEquals('bar', $session->getFlash('foo'));
+        self::assertEquals('baz', $session->getFlash('foz', 'baz'));
 
         $session->clearFlash();
         $session->clearFlash();
     }
 
-    /**
-     * @return void
-     */
     public function testICanCleanEphemeralValueInSession(): void
     {
         $_SESSION = [];
@@ -80,10 +56,10 @@ class SessionTest extends TestCase
 
         //~ First call render ephemeral "not active" (= removed after the second call)
         $session->clearFlash();
-        $this->assertTrue($session->hasFlash('foo'));
+        self::assertTrue($session->hasFlash('foo'));
 
         //~ First call render ephemeral "not active" (= removed after the second call)
         $session->clearFlash();
-        $this->assertFalse($session->hasFlash('foo'));
+        self::assertFalse($session->hasFlash('foo'));
     }
 }

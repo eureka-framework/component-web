@@ -14,32 +14,43 @@ namespace Eureka\Component\Web\Menu;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Class Helper
- *
- * @author Romain Cottard
+ * @phpstan-type MenuConfigType array{
+ *     label: string,
+ *     icon?: string|null,
+ *     mustBeLogged?: bool,
+ *     route?: string|null,
+ *     route_params?: array<string, string|int>,
+ *     children?: null|MenuChildConfigType[],
+ * }
+ * @phpstan-type MenuChildConfigType array{
+ *     label: string,
+ *     icon?: string|null,
+ *     divider?: bool,
+ *     mustBeLogged?: bool,
+ *     route?: string|null,
+ *     route_params?: array<string, string|int>,
+ * }
  */
 trait MenuControllerAwareTrait
 {
-    /** @var string $menuStateClosed */
     private static string $menuStateClosed = 'closed';
 
-    /** @var array<array<mixed>> $menuConfigMain */
+    /** @var MenuConfigType[] $menuConfigMain */
     private array $menuConfigMain;
 
-    /** @var array<array<mixed>> $menuConfigSecondary */
+    /** @var MenuConfigType[] $menuConfigSecondary */
     private array $menuConfigSecondary;
-
-    /** @var string $cookieMenuStateName */
     private string $cookieMenuStateName = '';
 
     /**
-     * @param array<array<mixed>> $menuConfigMain
-     * @param string $cookieMenuStateName
-     * @param array<array<mixed>> $menuConfigSecondary
-     * @return void
+     * @param MenuConfigType[] $menuConfigMain
+     * @param MenuConfigType[]  $menuConfigSecondary
      */
-    public function setMenuConfig(array $menuConfigMain, string $cookieMenuStateName = '', array $menuConfigSecondary = []): void
-    {
+    public function setMenuConfig(
+        array $menuConfigMain,
+        string $cookieMenuStateName = '',
+        array $menuConfigSecondary = [],
+    ): void {
         $this->menuConfigMain      = $menuConfigMain;
         $this->menuConfigSecondary = $menuConfigSecondary;
         $this->cookieMenuStateName = $cookieMenuStateName;
@@ -47,20 +58,17 @@ trait MenuControllerAwareTrait
 
     /**
      * Menu with max depth of 2.
-     *
-     * @param  bool $isMain
-     * @param  bool $isLogged
-     * @return Menu
      */
     protected function getMenu(bool $isMain = true, bool $isLogged = false): Menu
     {
         $routeParams  = $this->getRoute();
         $currentRoute = $routeParams['_route'] ?? '';
-        $menuConfig   = $isMain ? $this->menuConfigMain : $this->menuConfigSecondary;
+
+        $menuConfig = $isMain ? $this->menuConfigMain : $this->menuConfigSecondary;
 
         $menu = new Menu();
         foreach ($menuConfig as $data) {
-            $mustBeLogged = (bool) ($data['mustBeLogged'] ?? false);
+            $mustBeLogged = $data['mustBeLogged'] ?? false;
             if ($mustBeLogged && !$isLogged) {
                 continue;
             }
@@ -74,7 +82,7 @@ trait MenuControllerAwareTrait
                 ->setIsActive($menuRoute === $currentRoute)
             ;
 
-            if (!empty($data['children'])) {
+            if (isset($data['children']) && \is_array($data['children']) && $data['children'] !== []) {
                 $item->setSubmenu($this->getSubMenu($data['children'], $item, $currentRoute, $isLogged));
             }
 
@@ -85,8 +93,6 @@ trait MenuControllerAwareTrait
     }
 
     /**
-     * @param ServerRequestInterface|null $request
-     * @return string
      * @codeCoverageIgnore
      */
     protected function getMenuState(?ServerRequestInterface $request): string
@@ -99,7 +105,7 @@ trait MenuControllerAwareTrait
 
         $cookie = $request->getCookieParams();
 
-        if (isset($cookie[$this->cookieMenuStateName])) {
+        if (isset($cookie[$this->cookieMenuStateName]) && \is_string($cookie[$this->cookieMenuStateName])) {
             $state = $cookie[$this->cookieMenuStateName];
         }
 
@@ -107,17 +113,13 @@ trait MenuControllerAwareTrait
     }
 
     /**
-     * @param array<array<mixed>> $children
-     * @param MenuItem $parent
-     * @param string $currentRoute
-     * @param bool $isLogged
-     * @return Menu
+     * @param MenuChildConfigType[] $children
      */
     private function getSubMenu(array $children, MenuItem $parent, string $currentRoute, bool $isLogged = false): Menu
     {
         $menu = new Menu();
         foreach ($children as $data) {
-            $mustBeLogged = (bool) ($data['mustBeLogged'] ?? false);
+            $mustBeLogged = $data['mustBeLogged'] ?? false;
             if ($mustBeLogged && !$isLogged) {
                 continue;
             }
@@ -128,7 +130,7 @@ trait MenuControllerAwareTrait
 
             $item = new MenuItem($data['label']);
             $item
-                ->setIsDivider((isset($data['divider']) && (bool) $data['divider']))
+                ->setIsDivider((isset($data['divider']) && $data['divider']))
                 ->setUri($menuUri)
                 ->setIcon($data['icon'] ?? '')
                 ->setIsActive($currentRoute === $menuRoute)
@@ -145,19 +147,17 @@ trait MenuControllerAwareTrait
     }
 
     /**
-     * @param string|null $menuRoute
-     * @param array<string> $menuRouteParams
-     * @return string
+     * @param array<string, string|int> $menuRouteParams
      */
     private function getMenuUri(?string $menuRoute, array $menuRouteParams = []): string
     {
-        if (empty($menuRoute)) {
+        if ($menuRoute === null || $menuRoute === '') {
             $menuRoute = '#';
         }
 
-        if (mb_substr($menuRoute, 0, 4) === 'http') {
+        if (\mb_substr($menuRoute, 0, 4) === 'http') {
             $menuUri = $menuRoute;
-        } elseif (mb_substr($menuRoute, 0, 1) === '#') {
+        } elseif (\mb_substr($menuRoute, 0, 1) === '#') {
             $menuUri = 'javascript:void(0);';
         } else {
             $menuUri = $this->getRouteUri($menuRoute, $menuRouteParams);

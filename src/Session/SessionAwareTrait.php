@@ -13,20 +13,10 @@ namespace Eureka\Component\Web\Session;
 
 use Eureka\Component\Web\Notification\NotificationType;
 
-/**
- * Trait SessionAwareTrait
- *
- * @author Romain Cottard
- */
 trait SessionAwareTrait
 {
-    /** @var Session|null session */
     protected Session|null $session = null;
 
-    /**
-     * @param Session $session
-     * @return void
-     */
     public function setSession(Session $session): void
     {
         $this->session = $session;
@@ -52,7 +42,6 @@ trait SessionAwareTrait
 
     /**
      * @param array<mixed> $errors
-     * @return void
      */
     public function setFormErrors(array $errors): void
     {

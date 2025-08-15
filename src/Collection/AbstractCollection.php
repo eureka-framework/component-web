@@ -17,17 +17,12 @@ use Eureka\Component\Web\Menu\MenuItem;
 use Eureka\Component\Web\Notification\NotificationInterface;
 
 /**
- * Class AbstractCollection
- * @implements \Iterator<BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface>
- *
- * @author Romain Cottard
+ * @implements \Iterator<int, BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface>
  */
 class AbstractCollection implements \Iterator, \Countable
 {
-    /** @var int $index Current index key. */
     private int $index = 0;
-
-    /** @var int $count Number of element in breadcrumb */
+    /** @var int<0, max> $count */
     private int $count = 0;
 
     /** @var array<BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface> $collection */
@@ -36,95 +31,52 @@ class AbstractCollection implements \Iterator, \Countable
     /** @var int[] $names */
     private array $names = [];
 
-
-    /**
-     * Check if is the last element of collection.
-     *
-     * @return bool
-     */
     public function isLast(): bool
     {
         return ($this->index === ($this->count - 1));
     }
 
-    /**
-     * Check if is the first element of collection.
-     *
-     * @return bool
-     */
     public function isFirst(): bool
     {
         return ($this->index === 0);
     }
 
-    /**
-     * Current iterator method.
-     *
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface
     {
         return $this->collection[$this->index];
     }
 
-    /**
-     * Key iterator method.
-     *
-     * @return int
-     */
     public function key(): int
     {
         return $this->index;
     }
 
-    /**
-     * Next iterator method.
-     *
-     * @return void
-     */
     public function next(): void
     {
         $this->index++;
     }
 
-    /**
-     * Rewind iterator method.
-     *
-     * @return void
-     */
     public function rewind(): void
     {
         $this->index = 0;
     }
 
-    /**
-     * Valid iterator method.
-     *
-     * @return bool
-     */
     public function valid(): bool
     {
         return ($this->index < $this->count);
     }
 
     /**
-     * Count countable method.
-     *
-     * @return int
+     * @return int<0, max>
      */
     public function count(): int
     {
         return $this->count;
     }
 
-    /**
-     * @param BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface $item
-     * @return $this
-     */
-    protected function pushItem($item): self
+    protected function pushItem(BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface $item): self
     {
-        $itemName = method_exists($item, 'getName') ? $item->getName() : (string) $this->count();
+        $itemName = \method_exists($item, 'getName') ? $item->getName() : (string) $this->count();
         $this->collection[$this->count] = $item;
         $this->names[$itemName]  = $this->count;
 
@@ -133,25 +85,23 @@ class AbstractCollection implements \Iterator, \Countable
         return $this;
     }
 
-    /**
-     * @return BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface|null
-     */
-    protected function popItem()
+    protected function popItem(): BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface
     {
-        $last = array_pop($this->collection);
-        $this->count--;
+        $last = \array_pop($this->collection);
+
+        if ($last === null) {
+            throw new \LengthException('Cannot pop from an empty collection.');
+        }
+        if ($this->count > 0) {
+            $this->count--;
+        }
+
         $this->rewind();
 
         return $last;
     }
 
-    /**
-     * Get menu item by name.
-     *
-     * @param  string $name
-     * @return BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface|null
-     */
-    protected function getItem(string $name)
+    protected function getItem(string $name): BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface|null
     {
         if (!isset($this->names[$name])) {
             return null;

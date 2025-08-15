@@ -13,19 +13,8 @@ namespace Eureka\Component\Web\Notification;
 
 use Eureka\Component\Web\Collection\AbstractCollection;
 
-/**
- * Breadcrumb class
- *
- * @author  Romain Cottar
- */
 class NotificationCollection extends AbstractCollection
 {
-    /**
-     * Add item.
-     *
-     * @param NotificationInterface $item
-     * @return $this
-     */
     public function push(NotificationInterface $item): self
     {
         $this->pushItem($item);
@@ -33,9 +22,6 @@ class NotificationCollection extends AbstractCollection
         return $this;
     }
 
-    /**
-     * @return NotificationInterface
-     */
     public function pop(): NotificationInterface
     {
         /** @var NotificationInterface $item */

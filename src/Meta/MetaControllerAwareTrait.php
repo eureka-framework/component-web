@@ -11,19 +11,13 @@ declare(strict_types=1);
 
 namespace Eureka\Component\Web\Meta;
 
-/**
- * Trait MetaControllerAwareTrait
- *
- * @author Romain Cottard
- */
 trait MetaControllerAwareTrait
 {
-    /** @var array<mixed|array<mixed>> $metaConfig */
+    /** @var array<string, string|int|string[]|int[]|string[][]|int[][]> $metaConfig */
     private array $metaConfig;
 
     /**
-     * @param array<mixed|array<mixed>> $metaConfig
-     * @return void
+     * @param array<string, string|int|string[]|int[]|string[][]|int[][]> $metaConfig
      */
     public function setMetaConfig(array $metaConfig): void
     {
@@ -31,13 +25,13 @@ trait MetaControllerAwareTrait
     }
 
     /**
-     * @return array<mixed|array<mixed>>
+     * @return array<string, string|int|string[]|int[]|string[][]|int[][]>
      */
     protected function getMeta(): array
     {
         $meta = $this->metaConfig;
-        if (isset($meta['copyright']) && isset($meta['copyright']['year']) && $meta['copyright']['year'] === 'now') {
-            $meta['copyright']['year'] = date('Y');
+        if (isset($meta['copyright']['year']) && $meta['copyright']['year'] === 'now') {
+            $meta['copyright']['year'] = \date('Y');
         }
 
         return $meta;
