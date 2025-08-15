@@ -13,19 +13,8 @@ namespace Eureka\Component\Web\Breadcrumb;
 
 use Eureka\Component\Web\Collection\AbstractCollection;
 
-/**
- * Breadcrumb class
- *
- * @author  Romain Cottard
- */
 class Breadcrumb extends AbstractCollection
 {
-    /**
-     * Add item.
-     *
-     * @param BreadcrumbItem $item
-     * @return $this
-     */
     public function push(BreadcrumbItem $item): self
     {
         $this->pushItem($item);
@@ -33,9 +22,6 @@ class Breadcrumb extends AbstractCollection
         return $this;
     }
 
-    /**
-     * @return BreadcrumbItem
-     */
     public function pop(): BreadcrumbItem
     {
         /** @var BreadcrumbItem $item */

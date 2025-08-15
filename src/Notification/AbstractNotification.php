@@ -11,16 +11,11 @@ declare(strict_types=1);
 
 namespace Eureka\Component\Web\Notification;
 
-/**
- * Class for basic notifications on actions (save, delete...)
- *
- * @author Romain Cottard
- */
 abstract class AbstractNotification implements NotificationInterface
 {
     public function __construct(
         protected string $message,
-        protected NotificationType $type = NotificationType::Success
+        protected NotificationType $type = NotificationType::Success,
     ) {}
 
     public function getMessage(): string

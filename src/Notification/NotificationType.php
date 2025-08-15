@@ -11,11 +11,6 @@ declare(strict_types=1);
 
 namespace Eureka\Component\Web\Notification;
 
-/**
- * Class NotificationType
- *
- * @author Romain Cottard
- */
 enum NotificationType: string
 {
     case Info    = 'info';

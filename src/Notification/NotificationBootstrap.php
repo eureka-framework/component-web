@@ -11,18 +11,8 @@ declare(strict_types=1);
 
 namespace Eureka\Component\Web\Notification;
 
-/**
- * Class for basic notifications on actions (save, delete...)
- *
- * @author  Romain Cottard
- */
 class NotificationBootstrap extends AbstractNotification
 {
-    /**
-     * Get css used.
-     *
-     * @return string
-     */
     public function getCss(): string
     {
         return match ($this->type) {
@@ -33,11 +23,6 @@ class NotificationBootstrap extends AbstractNotification
         };
     }
 
-    /**
-     * Get header title.
-     *
-     * @return string
-     */
     public function getHeader(): string
     {
         return match ($this->type) {
@@ -48,11 +33,6 @@ class NotificationBootstrap extends AbstractNotification
         };
     }
 
-    /**
-     * Return icon name.
-     *
-     * @return string
-     */
     public function getIcon(): string
     {
         return match ($this->type) {

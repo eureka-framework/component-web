@@ -21,9 +21,7 @@ use Eureka\Component\Web\Session\SessionAwareTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class MockControllerTest
- *
- * @author Romain Cottard
+ * @phpstan-import-type MenuConfigType from MenuControllerAwareTrait
  */
 class MockControllerTest extends TestCase
 {
@@ -31,15 +29,12 @@ class MockControllerTest extends TestCase
     use MetaControllerAwareTrait;
     use SessionAwareTrait;
 
-    /**
-     * @return void
-     */
     public function testICanSetAndGetSessionFromTrait(): void
     {
         $_SESSION = [];
         $this->setSession(new Session());
 
-        $this->assertInstanceOf(Session::class, $this->getSession());
+        self::assertInstanceOf(Session::class, $this->getSession());
     }
 
     public function testICanAddAndRetrieveFlashNotifications(): void
@@ -47,18 +42,18 @@ class MockControllerTest extends TestCase
         $this->setSession(new Session());
 
         $this->addFlashNotification('flash notification', NotificationType::Success);
-        $this->assertSame(['flash notification'], $this->getFlashNotification(NotificationType::Success));
+        self::assertSame(['flash notification'], $this->getFlashNotification(NotificationType::Success));
 
         $this->addFlashNotification('other notification', NotificationType::Info);
 
-        $this->assertEquals(
+        self::assertEquals(
             (object) [
                 NotificationType::Success->value => ['flash notification'],
                 NotificationType::Info->value    => ['other notification'],
                 NotificationType::Warning->value => [],
                 NotificationType::Error->value   => [],
             ],
-            $this->getAllFlashNotification()
+            $this->getAllFlashNotification(),
         );
     }
 
@@ -68,7 +63,7 @@ class MockControllerTest extends TestCase
 
         $this->setFormErrors(['invalid password']);
 
-        $this->assertSame(['invalid password'], $this->getFormErrors());
+        self::assertSame(['invalid password'], $this->getFormErrors());
     }
 
     public function testICanSetAndRetrieveMetaConfig(): void
@@ -76,16 +71,17 @@ class MockControllerTest extends TestCase
         $this->setMetaConfig([
             'copyright' => [
                 'year' => 'now',
-                'name' => 'me'
+                'name' => 'me',
             ],
             'title' => 'test',
         ]);
 
+        /** @var array{copyright: array{year?: string, name?: string}, title?: string} $meta */
         $meta = $this->getMeta();
 
-        $this->assertEquals(date('Y'), $meta['copyright']['year'] ?? '');
-        $this->assertEquals('me', $meta['copyright']['name'] ?? '');
-        $this->assertEquals('test', $meta['title'] ?? '');
+        self::assertEquals(date('Y'), $meta['copyright']['year'] ?? '');
+        self::assertEquals('me', $meta['copyright']['name'] ?? '');
+        self::assertEquals('test', $meta['title'] ?? '');
     }
 
     public function testICanSetMenuConfigAndGetPartialMenuCollectionWhenIAmNotLogged(): void
@@ -93,16 +89,16 @@ class MockControllerTest extends TestCase
         $this->setMenuConfig($this->getTestMenuConfig(), 'open');
 
         $menu    = $this->getMenu();
-        $subMenu = $menu->get('Test') && $menu->get('Test')->getSubmenu() ? $menu->get('Test')->getSubmenu() : new Menu();
+        $subMenu = $menu->get('Test')?->getSubmenu() ?? new Menu();
 
-        $this->assertInstanceOf(MenuItem::class, $menu->get('Home'));
-        $this->assertInstanceOf(MenuItem::class, $menu->get('Test'));
-        $this->assertInstanceOf(MenuItem::class, $subMenu->get('Sub Test 1'));
-        $this->assertInstanceOf(MenuItem::class, $subMenu->get('Sub Test 2'));
-        $this->assertInstanceOf(MenuItem::class, $subMenu->get('Sub Test 3'));
+        self::assertInstanceOf(MenuItem::class, $menu->get('Home'));
+        self::assertInstanceOf(MenuItem::class, $menu->get('Test'));
+        self::assertInstanceOf(MenuItem::class, $subMenu->get('Sub Test 1'));
+        self::assertInstanceOf(MenuItem::class, $subMenu->get('Sub Test 2'));
+        self::assertInstanceOf(MenuItem::class, $subMenu->get('Sub Test 3'));
 
-        $this->assertNull($menu->get('Logged'));
-        $this->assertNull($subMenu->get('Sub Test 4'));
+        self::assertNull($menu->get('Logged'));
+        self::assertNull($subMenu->get('Sub Test 4'));
     }
 
     public function testICanSetMenuConfigAndGetCompleteMenuCollectionWhenIAmLogged(): void
@@ -112,60 +108,60 @@ class MockControllerTest extends TestCase
         $menu = $this->getMenu(true, true);
 
         $item1 = $menu->get('Home') ?? new MenuItem('void');
-        $this->assertEquals('Home', $item1->getName());
-        $this->assertEquals('', $item1->getIcon());
-        $this->assertEquals('/home', $item1->getUri());
-        $this->assertFalse($item1->hasSubmenu());
-        $this->assertFalse($item1->hasIcon());
-        $this->assertFalse($item1->isActive());
+        self::assertEquals('Home', $item1->getName());
+        self::assertEquals('', $item1->getIcon());
+        self::assertEquals('/home', $item1->getUri());
+        self::assertFalse($item1->hasSubmenu());
+        self::assertFalse($item1->hasIcon());
+        self::assertFalse($item1->isActive());
 
         $item2 = $menu->get('Test') ?? new MenuItem('void');
-        $this->assertEquals('Test', $item2->getName());
-        $this->assertEquals('ico', $item2->getIcon());
-        $this->assertEquals('javascript:void(0);', $item2->getUri());
-        $this->assertTrue($item2->hasSubmenu());
-        $this->assertTrue($item2->hasIcon());
-        $this->assertTrue($item2->isActive());
+        self::assertEquals('Test', $item2->getName());
+        self::assertEquals('ico', $item2->getIcon());
+        self::assertEquals('javascript:void(0);', $item2->getUri());
+        self::assertTrue($item2->hasSubmenu());
+        self::assertTrue($item2->hasIcon());
+        self::assertTrue($item2->isActive());
 
         $item3 = $menu->get('Logged') ?? new MenuItem('void');
-        $this->assertEquals('Logged', $item3->getName());
-        $this->assertEquals('', $item3->getIcon());
-        $this->assertEquals('/home', $item3->getUri());
-        $this->assertFalse($item3->hasSubmenu());
-        $this->assertFalse($item3->hasIcon());
-        $this->assertFalse($item3->isActive());
+        self::assertEquals('Logged', $item3->getName());
+        self::assertEquals('', $item3->getIcon());
+        self::assertEquals('/home', $item3->getUri());
+        self::assertFalse($item3->hasSubmenu());
+        self::assertFalse($item3->hasIcon());
+        self::assertFalse($item3->isActive());
 
-        $subItem1 = $item2->getSubmenu() && $item2->getSubmenu()->get('Sub Test 1') ? $item2->getSubmenu()->get('Sub Test 1') : new MenuItem('void');
-        $this->assertEquals('Sub Test 1', $subItem1->getName());
-        $this->assertEquals('', $subItem1->getIcon());
-        $this->assertEquals('javascript:void(0);', $subItem1->getUri());
-        $this->assertFalse($subItem1->hasSubmenu());
-        $this->assertFalse($subItem1->hasIcon());
-        $this->assertFalse($subItem1->isActive());
+        $subItem1 = $item2->getSubmenu()?->get('Sub Test 1') ?? new MenuItem('void');
+        self::assertEquals('Sub Test 1', $subItem1->getName());
+        self::assertEquals('', $subItem1->getIcon());
+        self::assertEquals('javascript:void(0);', $subItem1->getUri());
+        self::assertFalse($subItem1->hasSubmenu());
+        self::assertFalse($subItem1->hasIcon());
+        self::assertFalse($subItem1->isActive());
 
-        $subItem2 = $item2->getSubmenu() && $item2->getSubmenu()->get('Sub Test 2') ? $item2->getSubmenu()->get('Sub Test 2') : new MenuItem('void');
-        $this->assertEquals('Sub Test 2', $subItem2->getName());
-        $this->assertEquals('', $subItem2->getIcon());
-        $this->assertEquals('http://external.com', $subItem2->getUri());
-        $this->assertFalse($subItem2->hasSubmenu());
-        $this->assertFalse($subItem2->hasIcon());
-        $this->assertFalse($subItem2->isActive());
+        $subItem2 = $item2->getSubmenu()?->get('Sub Test 2') ?? new MenuItem('void');
+        self::assertEquals('Sub Test 2', $subItem2->getName());
+        self::assertEquals('', $subItem2->getIcon());
+        self::assertEquals('http://external.com', $subItem2->getUri());
+        self::assertFalse($subItem2->hasSubmenu());
+        self::assertFalse($subItem2->hasIcon());
+        self::assertFalse($subItem2->isActive());
 
-        $subItem3 = $item2->getSubmenu() && $item2->getSubmenu()->get('Sub Test 3') ? $item2->getSubmenu()->get('Sub Test 3') : new MenuItem('void');
-        $this->assertEquals('Sub Test 3', $subItem3->getName());
-        $this->assertEquals('', $subItem3->getIcon());
-        $this->assertEquals('/home', $subItem3->getUri());
-        $this->assertFalse($subItem3->hasSubmenu());
-        $this->assertFalse($subItem3->hasIcon());
-        $this->assertTrue($subItem3->isActive());
+        $subItem3 = $item2->getSubmenu()?->get('Sub Test 3') ?? new MenuItem('void');
+        self::assertEquals('Sub Test 3', $subItem3->getName());
+        self::assertEquals('', $subItem3->getIcon());
+        self::assertEquals('/home', $subItem3->getUri());
+        self::assertFalse($subItem3->hasSubmenu());
+        self::assertFalse($subItem3->hasIcon());
+        self::assertTrue($subItem3->isActive());
 
-        $subItem4 = $item2->getSubmenu() && $item2->getSubmenu()->get('Sub Test 4') ? $item2->getSubmenu()->get('Sub Test 4') : new MenuItem('void');
-        $this->assertEquals('Sub Test 4', $subItem4->getName());
-        $this->assertEquals('', $subItem4->getIcon());
-        $this->assertEquals('/home', $subItem4->getUri());
-        $this->assertFalse($subItem4->hasSubmenu());
-        $this->assertFalse($subItem4->hasIcon());
-        $this->assertFalse($subItem4->isActive());
+        $subItem4 = $item2->getSubmenu()?->get('Sub Test 4') ?? new MenuItem('void');
+        self::assertEquals('Sub Test 4', $subItem4->getName());
+        self::assertEquals('', $subItem4->getIcon());
+        self::assertEquals('/home', $subItem4->getUri());
+        self::assertFalse($subItem4->hasSubmenu());
+        self::assertFalse($subItem4->hasIcon());
+        self::assertFalse($subItem4->isActive());
     }
     /**
      * Emulate getRoute() in application.
@@ -182,9 +178,7 @@ class MockControllerTest extends TestCase
     /**
      * Emulate getRouteUri() in application.
      *
-     * @param string $routeName
-     * @param array<string> $params
-     * @return string
+     * @param array<string, string|int> $params
      */
     protected function getRouteUri(string $routeName, array $params = []): string
     {
@@ -192,7 +186,7 @@ class MockControllerTest extends TestCase
     }
 
     /**
-     * @return array<array<mixed>>
+     * @return MenuConfigType[]
      */
     private function getTestMenuConfig(): array
     {

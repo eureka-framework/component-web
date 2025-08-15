@@ -15,41 +15,19 @@ use Eureka\Component\Web\Menu\Menu;
 use Eureka\Component\Web\Menu\MenuItem;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class MenuTest
- *
- * @author Romain Cottard
- */
 class MenuTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function testICanInitializeMenu(): void
-    {
-        $menu = new Menu();
-
-        $this->assertInstanceOf(Menu::class, $menu);
-    }
-
-    /**
-     * @return void
-     */
     public function testICanPushAndGetItemToMenu(): void
     {
         $menu = new Menu();
         $menu->push(new MenuItem('item 1'));
         $menu->push(new MenuItem('item 2'));
 
-        /** @var MenuItem $item */
         $item = $menu->get('item 2');
 
-        $this->assertEquals('item 2', $item->getName());
+        self::assertEquals('item 2', $item?->getName());
     }
 
-    /**
-     * @return void
-     */
     public function testICanIterateOnMenuInstance(): void
     {
         $menu = new Menu();
@@ -58,26 +36,19 @@ class MenuTest extends TestCase
 
         foreach ($menu as $index => $item) {
             /** @var MenuItem $item */
-            $this->assertEquals('item ' . ($index + 1), $item->getName());
+            self::assertEquals('item ' . ($index + 1), $item->getName());
         }
     }
 
-    /**
-     * @return void
-     */
     public function testICanCountItemInMenu(): void
     {
         $menu = new Menu();
         $menu->push(new MenuItem('item 1'));
         $menu->push(new MenuItem('item 2'));
 
-        $this->assertCount(2, $menu);
-        $this->assertEquals(2, count($menu));
+        self::assertCount(2, $menu);
     }
 
-    /**
-     * @return void
-     */
     public function testICanCheckIfItIsTheFirstItemDuringTheIterationOnMenu(): void
     {
         $menu = new Menu();
@@ -86,12 +57,9 @@ class MenuTest extends TestCase
 
         $menu->rewind();
 
-        $this->assertTrue($menu->isFirst());
+        self::assertTrue($menu->isFirst());
     }
 
-    /**
-     * @return void
-     */
     public function testICanCheckIfItIsTheLastItemDuringTheIterationOnMenu(): void
     {
         $menu = new Menu();
@@ -101,12 +69,9 @@ class MenuTest extends TestCase
         $menu->rewind();
         $menu->next();
 
-        $this->assertTrue($menu->isLast());
+        self::assertTrue($menu->isLast());
     }
 
-    /**
-     * @return void
-     */
     public function testICanSetAndRetrieveAllInformationOnItem(): void
     {
         $item = (new MenuItem(''))
@@ -118,13 +83,13 @@ class MenuTest extends TestCase
             ->setIsActive(true)
         ;
 
-        $this->assertSame('item 1', $item->getName());
-        $this->assertSame('icon', $item->getIcon());
-        $this->assertSame('uri', $item->getUri());
-        $this->assertInstanceOf(Menu::class, $item->getSubmenu());
-        $this->assertTrue($item->isActive());
-        $this->assertTrue($item->isDivider());
-        $this->assertTrue($item->hasIcon());
-        $this->assertTrue($item->hasSubmenu());
+        self::assertSame('item 1', $item->getName());
+        self::assertSame('icon', $item->getIcon());
+        self::assertSame('uri', $item->getUri());
+        self::assertInstanceOf(Menu::class, $item->getSubmenu());
+        self::assertTrue($item->isActive());
+        self::assertTrue($item->isDivider());
+        self::assertTrue($item->hasIcon());
+        self::assertTrue($item->hasSubmenu());
     }
 }
