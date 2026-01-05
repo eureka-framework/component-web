@@ -76,6 +76,7 @@ class AbstractCollection implements \Iterator, \Countable
 
     protected function pushItem(BreadcrumbItem|CarouselItem|MenuItem|NotificationInterface $item): self
     {
+        /** @var string $itemName */
         $itemName = \method_exists($item, 'getName') ? $item->getName() : (string) $this->count();
         $this->collection[$this->count] = $item;
         $this->names[$itemName]  = $this->count;

@@ -25,7 +25,7 @@ class MenuTest extends TestCase
 
         $item = $menu->get('item 2');
 
-        self::assertEquals('item 2', $item?->getName());
+        self::assertSame('item 2', $item?->getName());
     }
 
     public function testICanIterateOnMenuInstance(): void
@@ -36,7 +36,7 @@ class MenuTest extends TestCase
 
         foreach ($menu as $index => $item) {
             /** @var MenuItem $item */
-            self::assertEquals('item ' . ($index + 1), $item->getName());
+            self::assertSame('item ' . ($index + 1), $item->getName());
         }
     }
 

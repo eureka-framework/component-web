@@ -25,7 +25,7 @@ class CarouselTest extends TestCase
 
         $item = $carousel->pop();
 
-        self::assertEquals('item 2', $item->getTitle());
+        self::assertSame('item 2', $item->getTitle());
     }
 
     public function testICanIterateOnCarouselInstance(): void
@@ -36,7 +36,7 @@ class CarouselTest extends TestCase
 
         foreach ($carousel as $index => $item) {
             /** @var CarouselItem $item */
-            self::assertEquals('item ' . ($index + 1), $item->getTitle());
+            self::assertSame('item ' . ($index + 1), $item->getTitle());
         }
     }
 

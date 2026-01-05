@@ -25,7 +25,7 @@ class BreadcrumbTest extends TestCase
 
         $item = $breadcrumb->pop();
 
-        self::assertEquals('item 2', $item->getName());
+        self::assertSame('item 2', $item->getName());
     }
 
     public function testICanIterateOnBreadcrumbInstance(): void
@@ -36,7 +36,7 @@ class BreadcrumbTest extends TestCase
 
         foreach ($breadcrumb as $index => $item) {
             /** @var BreadcrumbItem $item */
-            self::assertEquals('item ' . ($index + 1), $item->getName());
+            self::assertSame('item ' . ($index + 1), $item->getName());
         }
     }
 
