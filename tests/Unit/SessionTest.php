@@ -24,8 +24,8 @@ class SessionTest extends TestCase
 
         $session->set('foo', 'bar');
         self::assertTrue($session->has('foo'));
-        self::assertEquals('bar', $session->get('foo'));
-        self::assertEquals('baz', $session->get('foz', 'baz'));
+        self::assertSame('bar', $session->get('foo'));
+        self::assertSame('baz', $session->get('foz', 'baz'));
 
         $session->remove('foo');
         self::assertFalse($session->has('foo'));
@@ -39,8 +39,8 @@ class SessionTest extends TestCase
 
         $session->setFlash('foo', 'bar');
         self::assertTrue($session->hasFlash('foo'));
-        self::assertEquals('bar', $session->getFlash('foo'));
-        self::assertEquals('baz', $session->getFlash('foz', 'baz'));
+        self::assertSame('bar', $session->getFlash('foo'));
+        self::assertSame('baz', $session->getFlash('foz', 'baz'));
 
         $session->clearFlash();
         $session->clearFlash();

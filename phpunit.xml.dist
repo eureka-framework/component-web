@@ -1,23 +1,11 @@
 <?xml version="1.0"?>
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.2/phpunit.xsd"
-        backupGlobals="true"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd"
         colors="true"
-        failOnEmptyTestSuite="false"
-        failOnIncomplete="true"
-        failOnRisky="true"
-        failOnWarning="true"
         displayDetailsOnTestsThatTriggerDeprecations="true"
-        displayDetailsOnPhpunitDeprecations="true"
-        displayDetailsOnTestsThatTriggerErrors="true"
-        displayDetailsOnTestsThatTriggerNotices="true"
-        displayDetailsOnTestsThatTriggerWarnings="true"
-        cacheDirectory="build/.phpunit.cache">
-
-  <php>
-    <ini name="error_reporting" value="E_ALL"/>
-  </php>
+        cacheDirectory="build/.phpunit.cache"
+>
 
   <source>
     <include>

@@ -79,9 +79,9 @@ class MockControllerTest extends TestCase
         /** @var array{copyright: array{year?: string, name?: string}, title?: string} $meta */
         $meta = $this->getMeta();
 
-        self::assertEquals(date('Y'), $meta['copyright']['year'] ?? '');
-        self::assertEquals('me', $meta['copyright']['name'] ?? '');
-        self::assertEquals('test', $meta['title'] ?? '');
+        self::assertSame(date('Y'), $meta['copyright']['year'] ?? '');
+        self::assertSame('me', $meta['copyright']['name'] ?? '');
+        self::assertSame('test', $meta['title'] ?? '');
     }
 
     public function testICanSetMenuConfigAndGetPartialMenuCollectionWhenIAmNotLogged(): void
@@ -108,57 +108,57 @@ class MockControllerTest extends TestCase
         $menu = $this->getMenu(true, true);
 
         $item1 = $menu->get('Home') ?? new MenuItem('void');
-        self::assertEquals('Home', $item1->getName());
-        self::assertEquals('', $item1->getIcon());
-        self::assertEquals('/home', $item1->getUri());
+        self::assertSame('Home', $item1->getName());
+        self::assertSame('', $item1->getIcon());
+        self::assertSame('/home', $item1->getUri());
         self::assertFalse($item1->hasSubmenu());
         self::assertFalse($item1->hasIcon());
         self::assertFalse($item1->isActive());
 
         $item2 = $menu->get('Test') ?? new MenuItem('void');
-        self::assertEquals('Test', $item2->getName());
-        self::assertEquals('ico', $item2->getIcon());
-        self::assertEquals('javascript:void(0);', $item2->getUri());
+        self::assertSame('Test', $item2->getName());
+        self::assertSame('ico', $item2->getIcon());
+        self::assertSame('javascript:void(0);', $item2->getUri());
         self::assertTrue($item2->hasSubmenu());
         self::assertTrue($item2->hasIcon());
         self::assertTrue($item2->isActive());
 
         $item3 = $menu->get('Logged') ?? new MenuItem('void');
-        self::assertEquals('Logged', $item3->getName());
-        self::assertEquals('', $item3->getIcon());
-        self::assertEquals('/home', $item3->getUri());
+        self::assertSame('Logged', $item3->getName());
+        self::assertSame('', $item3->getIcon());
+        self::assertSame('/home', $item3->getUri());
         self::assertFalse($item3->hasSubmenu());
         self::assertFalse($item3->hasIcon());
         self::assertFalse($item3->isActive());
 
         $subItem1 = $item2->getSubmenu()?->get('Sub Test 1') ?? new MenuItem('void');
-        self::assertEquals('Sub Test 1', $subItem1->getName());
-        self::assertEquals('', $subItem1->getIcon());
-        self::assertEquals('javascript:void(0);', $subItem1->getUri());
+        self::assertSame('Sub Test 1', $subItem1->getName());
+        self::assertSame('', $subItem1->getIcon());
+        self::assertSame('javascript:void(0);', $subItem1->getUri());
         self::assertFalse($subItem1->hasSubmenu());
         self::assertFalse($subItem1->hasIcon());
         self::assertFalse($subItem1->isActive());
 
         $subItem2 = $item2->getSubmenu()?->get('Sub Test 2') ?? new MenuItem('void');
-        self::assertEquals('Sub Test 2', $subItem2->getName());
-        self::assertEquals('', $subItem2->getIcon());
-        self::assertEquals('http://external.com', $subItem2->getUri());
+        self::assertSame('Sub Test 2', $subItem2->getName());
+        self::assertSame('', $subItem2->getIcon());
+        self::assertSame('http://external.com', $subItem2->getUri());
         self::assertFalse($subItem2->hasSubmenu());
         self::assertFalse($subItem2->hasIcon());
         self::assertFalse($subItem2->isActive());
 
         $subItem3 = $item2->getSubmenu()?->get('Sub Test 3') ?? new MenuItem('void');
-        self::assertEquals('Sub Test 3', $subItem3->getName());
-        self::assertEquals('', $subItem3->getIcon());
-        self::assertEquals('/home', $subItem3->getUri());
+        self::assertSame('Sub Test 3', $subItem3->getName());
+        self::assertSame('', $subItem3->getIcon());
+        self::assertSame('/home', $subItem3->getUri());
         self::assertFalse($subItem3->hasSubmenu());
         self::assertFalse($subItem3->hasIcon());
         self::assertTrue($subItem3->isActive());
 
         $subItem4 = $item2->getSubmenu()?->get('Sub Test 4') ?? new MenuItem('void');
-        self::assertEquals('Sub Test 4', $subItem4->getName());
-        self::assertEquals('', $subItem4->getIcon());
-        self::assertEquals('/home', $subItem4->getUri());
+        self::assertSame('Sub Test 4', $subItem4->getName());
+        self::assertSame('', $subItem4->getIcon());
+        self::assertSame('/home', $subItem4->getUri());
         self::assertFalse($subItem4->hasSubmenu());
         self::assertFalse($subItem4->hasIcon());
         self::assertFalse($subItem4->isActive());

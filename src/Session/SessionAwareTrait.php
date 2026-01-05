@@ -15,14 +15,14 @@ use Eureka\Component\Web\Notification\NotificationType;
 
 trait SessionAwareTrait
 {
-    protected Session|null $session = null;
+    protected ?Session $session = null;
 
     public function setSession(Session $session): void
     {
         $this->session = $session;
     }
 
-    protected function getSession(): Session|null
+    protected function getSession(): ?Session
     {
         return $this->session;
     }

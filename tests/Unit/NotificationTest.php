@@ -28,7 +28,7 @@ class NotificationTest extends TestCase
 
         $item = $notifications->pop();
 
-        self::assertEquals('item 2', $item->getMessage());
+        self::assertSame('item 2', $item->getMessage());
     }
 
     public function testICanIterateOnNotificationInstance(): void
@@ -39,7 +39,7 @@ class NotificationTest extends TestCase
 
         /** @var NotificationInterface $item */
         foreach ($notifications as $index => $item) {
-            self::assertEquals('item ' . ($index + 1), $item->getMessage());
+            self::assertSame('item ' . ($index + 1), $item->getMessage());
         }
     }
 
